@@ -33,3 +33,83 @@ body
     font-family: "Roboto", sans-serif;
     background-color: #FAFAFA;
 }
+/*
+* ==============LOGIN/REGISTER FORM ================
+*/
+body {
+  background: #ecf0f1;
+}
+.form-wrap {
+  position: relative;
+  margin: 60px auto;
+  background: #FFFFFF;
+  width: 350px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 10px #333;
+  padding: 15px;
+}
+.form-wrap h2 {
+  text-align: center;
+  font-weight: 200;
+  font-size: 2em;
+  margin-top: 10px;
+  color: #34495e;
+}
+.form-wrap .form {
+  padding-top: 20px;
+}
+.form-wrap .form input[type="text"],
+.form-wrap .form input[type="password"],
+.form-wrap .form button {
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 25px;
+  height: 40px;
+  border-radius: 5px;
+  outline: 0;
+  -moz-outline-style: none;
+}
+.form-wrap .form input[type="text"],
+.form-wrap .form input[type="password"] {
+  border: 1px solid #bbb;
+  padding: 0 0 0 10px;
+  font-size: 14px;
+}
+.form-wrap .form input[type="text"]:focus,
+.form-wrap .form input[type="password"]:focus {
+  border: 1px solid #3498db;
+}
+.form-wrap .form a {
+  text-align: center;
+  font-size: 10px;
+  color: #3498db;
+}
+.form-wrap .form a p {
+  padding-bottom: 10px;
+}
+.form-wrap .form button {
+  background: #26a69a;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 200;
+  cursor: pointer;
+  transition: box-shadow .4s ease;
+}
+.form-wrap .form button:hover {
+  box-shadow: 1px 1px 5px #555;
+}
+.form-wrap .form button:active {
+  box-shadow: 1px 1px 7px #222;
+}
+.form-wrap:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: -webkit-linear-gradient(left, #72D3C9 0%, #72D3C9 25%, #26a69a 25%, #26a69a 50%, #059C8C 50%, #059C8C 75%, #01766A 75%, #01766A 100%);
+  background: -moz-linear-gradient(left, #72D3C9 0%, #72D3C9 25%, #26a69a 25%, #26a69a 50%, #059C8C 50%, #059C8C 75%, #01766A 75%, #01766A 100%);
+  height: 5px;
+  border-radius: 5px 5px 0 0;
+}
