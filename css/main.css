@@ -73,6 +73,32 @@ a
     text-decoration: none;
     color: inherit;
 }
+#actionBar
+{
+    margin-bottom: 150px;
+    text-align: center;
+    color:#4dd0e1;
+}
+#naviButton:hover
+{
+    color:aqua;
+    cursor: pointer;
+}
+#favorite:hover
+{
+    color:aqua;
+    cursor: pointer;
+}
+#gotoLocation:hover
+{
+    color:aqua;
+    cursor: pointer;
+}
+#rideLater:hover
+{
+    color:aqua;
+    cursor: pointer;
+}
 /*
 * ==============LOGIN/REGISTER FORM ================
 */
