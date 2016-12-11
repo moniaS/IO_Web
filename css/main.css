@@ -10,7 +10,8 @@
 }
 div.scroll 
 {
-    max-height: 300px;
+    height:500px;
+    max-height: 500px;
     overflow: scroll;
 }
 .authorComment
@@ -47,6 +48,30 @@ body
 {
     background-color: aqua;
     cursor: pointer;
+}
+#slogan
+{
+    margin-top: 50px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+    color:white;
+    font-size: 60px;
+    border-bottom: dashed;
+    border-bottom-color: yellow;
+    border-bottom-width: thick;
+    border-top: dashed;
+    border-top-color: yellow;
+    border-top-width: thick;
+}
+.logoImg
+{
+    height: 60px;
+}
+a
+{
+    text-decoration: none;
+    color: inherit;
 }
 /*
 * ==============LOGIN/REGISTER FORM ================
