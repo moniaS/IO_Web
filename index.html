@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-<!--Import Google Icon Font-->
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!--Import materialize.css-->
-        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-<!--Import main.css-->
-        <link type="text/css" rel="stylesheet" href="css/main.css"  media="screen,projection"/>
-<!--Let browser know website is optimized for mobile-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
-        <script src="js/custom.js"></script>
-    </head>
-    <body>
-<!--nav Bar-->
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <!--Import main.css-->
+    <link type="text/css" rel="stylesheet" href="css/main.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
+    <script src="js/custom.js"></script>
+</head>
+
+<body>
+    <!--nav Bar-->
     <nav>
         <div class="nav-wrapper cyan darken-1">
-         <img class="logoImg" src="images/logo.png">
+            <img class="logoImg" src="images/logo.png">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href=""><i class="material-icons">search</i></a></li>
                 <li><a href=""><i class="material-icons">view_module</i></a></li>
@@ -29,28 +32,27 @@
             </ul>
         </div>
     </nav>
-<!--main content-->
+    <!--main content-->
     <div class="container">
         <div id="slogan">Your success is our success</div>
         <div class="row">
-<!--examplePosts will be replaced with auto-generated divs with content from satabase-->
+            <!--examplePosts will be replaced with auto-generated divs with content from satabase-->
             <div class="col s12">
-            <div id="siteHeader"> Recently added </div>
-            <div class="post">
-                <div class="col s8">
-                    <div class="card-panel grey lighten-5 z-depth-1">
-                        <div id="map"></div>
+                <div id="siteHeader"> Recently added </div>
+                <div class="post">
+                    <div class="col s8">
+                        <div class="card-panel grey lighten-5 z-depth-1">
+                            <div id="map"></div>
+                        </div>
                     </div>
-                </div>
-<!--postedRoutes-->
+                    <!--postedRoutes-->
                     <div class="col s4">
                         <div class="scroll">
                             <a href="post.html">
                                 <div class="card-panel grey lighten-5 z-depth-1">
                                     <div class="postedRoute">
                                         <div class="user">
-                                            <img src="images/yuna.jpg" alt="" class="circle responsive-img">
-                                            Stefan Iksinski
+                                            <img src="images/yuna.jpg" alt="" class="circle responsive-img"> Stefan Iksinski
                                         </div>
                                         <div class="routeDescription">
                                             Lorem ipsum dolor sit amet
@@ -62,11 +64,10 @@
                                 <div class="card-panel grey lighten-5 z-depth-1">
                                     <div class="postedRoute">
                                         <div class="user">
-                                            <img src="images/yuna.jpg" alt="" class="circle responsive-img">
-                                            Adam Rawski
+                                            <img src="images/yuna.jpg" alt="" class="circle responsive-img"> Adam Rawski
                                         </div>
                                         <div class="routeDescription">
-                                             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                                         </div>
                                     </div>
                                 </div>
@@ -75,11 +76,10 @@
                                 <div class="card-panel grey lighten-5 z-depth-1">
                                     <div class="postedRoute">
                                         <div class="user">
-                                            <img src="images/yuna.jpg" alt="" class="circle responsive-img">
-                                            Agata Werter
+                                            <img src="images/yuna.jpg" alt="" class="circle responsive-img"> Agata Werter
                                         </div>
                                         <div class="routeDescription">
-                                            ut labore et dolore magna aliqua. 
+                                            ut labore et dolore magna aliqua.
                                         </div>
                                     </div>
                                 </div>
@@ -88,36 +88,54 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s8 offset-l2">
+            <div class="waypointInfo">
+                <div class="card-panel grey lighten-5 z-depth-1">
+
+                    <div class="title">
+                        <span>Name: </span><span class="value" />
+                    </div>
+                    <div class="description">
+                        <span>Description: </span><span class="value" />
+                    </div>
+                    <div class="images">
+                        <span>Images: </span><span class="value" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-<!--footer-->
+    </div>
+    <!--footer-->
     <footer class="page-footer cyan darken-1">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Footer Content</h5>
-            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Links</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright">
         <div class="container">
-        © 2014 Copyright Text
-        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
-    </footer>  
-<!--google map script temporary here-->
+        <div class="footer-copyright">
+            <div class="container">
+                © 2014 Copyright Text
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
+    <!--google map script temporary here-->
     <script>
         var database = firebase.database();
         var waypointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
@@ -130,8 +148,10 @@
                 snapshot.forEach(function(childSnapshot) {
                     var childData = childSnapshot.val();
                     var wayPoint = {};
+                    wayPoint.id = childData.id;
                     wayPoint.latitude = childData.coordinate.latitude;
                     wayPoint.longitude = childData.coordinate.longitude;
+                    wayPoint.opis = childData.opis;
                     waypoints.push(wayPoint);
                 });
 
@@ -140,19 +160,31 @@
                     center: new google.maps.LatLng(waypoints[1].latitude, waypoints[1].longitude)
                 });
 
-                for (var i = 0; i < waypoints.length; i++){
-                    var marker = new google.maps.Marker({
+                var infowindow = new google.maps.InfoWindow();
+                var marker;
+                for (var i = 0; i < waypoints.length; i++) {
+                    marker = new google.maps.Marker({
                         position: new google.maps.LatLng(waypoints[i].latitude, waypoints[i].longitude),
                         map: map
                     });
+
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                        return function() {
+                            $(".waypointInfo").slideDown();
+                            $(".waypointInfo .title .value").html(waypoints[i].id);
+                            $(".waypointInfo .description .value").html(waypoints[i].opis);
+                            infowindow.setContent(waypoints[i].opis);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, i));
                 }
             });
         }
     </script>
-<!--Import jQuery before materialize.js-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyaOvUpwamVCDPcXn2eLH_JTi8bVrQ9Is&callback=initMap"></script>
-    </body>
-    
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyaOvUpwamVCDPcXn2eLH_JTi8bVrQ9Is&callback=initMap"></script>
+</body>
+
 </html>
