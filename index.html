@@ -118,25 +118,28 @@
 
         <!--google map script temporary here-->
         function initMap() {
-            var wayPoint = {};
+            var waypoints = new Array();
 
             waypointsRef.on('value', function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
                     var childData = childSnapshot.val();
+                    var wayPoint = {};
                     wayPoint.latitude = childData.coordinate.latitude;
                     wayPoint.longitude = childData.coordinate.longitude;
+                    waypoints.push(wayPoint);
                 });
 
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 8,
-                    center: new google.maps.LatLng(wayPoint.latitude, wayPoint.longitude)
+                    center: new google.maps.LatLng(waypoints[1].latitude, waypoints[1].longitude)
                 });
 
-                var marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(wayPoint.latitude, wayPoint.longitude),
-                    map: map
-                });
-
+                for (var i = 0; i < waypoints.length; i++){
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(waypoints[i].latitude, waypoints[i].longitude),
+                        map: map
+                    });
+                }
             });
         }
     </script>
