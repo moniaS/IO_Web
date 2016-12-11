@@ -23,12 +23,14 @@ div.scroll
     font-size: 30px;
     color: white;
 }
-#siteHeader
+.siteHeader
 {
-    color: #4dd0e1;
-    font-size: 50px;
-    padding-top: 80px;    
-    padding-bottom: 40px;
+    /*color: #4dd0e1;*/
+    font-size: 30px;
+    padding-top: 20px;
+}
+nav {
+  opacity: 0.5;
 }
 body
 {
@@ -49,22 +51,38 @@ body
     background-color: aqua;
     cursor: pointer;
 }
+.header {
+    background-image: url(../images/road.jpg);
+    height: 300px;
+    position: relative;
+    z-index: -5;
+    top: -70px;
+}
 #slogan
 {
-    margin-left: 16.6%;
+    text-align: center;
+    color:white;
+    font-size: 40px;
+    background-color: #444444;
+    opacity: 0.5;
+    margin: 0px auto;
+    width: 50%;
+    position: relative;
+    top: 125px;
+
+
+
+   /* margin-left: 16.6%;
     margin-right: 16.6%;
     margin-top: 50px;
     padding-top: 30px;
     padding-bottom: 30px;
-    text-align: center;
-    color:white;
-    font-size: 60px;
     border-bottom: dashed;
     border-bottom-color: yellow;
     border-bottom-width: thick;
     border-top: dashed;
     border-top-color: yellow;
-    border-top-width: thick;
+    border-top-width: thick;*/
 }
 .logoImg
 {
@@ -80,6 +98,7 @@ a
 /*    margin-bottom: 150px;*/
     text-align: center;
     color:#4dd0e1;
+    padding-top: 20px;
 }
 #naviButton:hover
 {
@@ -105,6 +124,8 @@ a
 * ==============LOGIN/REGISTER FORM ================
 */
 body {
+      font-family: "Roboto", sans-serif;
+
   background: #ecf0f1;
 }
 .form-wrap {
@@ -136,6 +157,10 @@ body {
   border-radius: 5px;
   outline: 0;
   -moz-outline-style: none;
+}
+.form-wrap .form input[type="text"],
+.form-wrap .form input[type="password"] {
+   width: 77%;
 }
 .form-wrap .form input[type="text"],
 .form-wrap .form input[type="password"] {
@@ -180,4 +205,41 @@ body {
   background: -moz-linear-gradient(left, #72D3C9 0%, #72D3C9 25%, #26a69a 25%, #26a69a 50%, #059C8C 50%, #059C8C 75%, #01766A 75%, #01766A 100%);
   height: 5px;
   border-radius: 5px 5px 0 0;
+}
+#passwordConfirmed {
+  margin-bottom: 0px !important;
+}
+.waypointInfo {
+  display: none;
+}
+.waypointInfo i {
+    position: relative;
+    bottom: -10px;
+}
+.waypointInfo .title {
+  background-color: #00acc1;
+  padding: 15px 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.waypointInfo .title .value {
+  font-weight: normal !important;
+  font-size: 30px !important;
+  color: white;
+}
+.waypointInfo .value {
+  font-weight: bold;
+  font-size: 15px;
+}
+.passwordError {
+  background-color: red;
+  display: none;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  width: 80%;
+  margin-left: 10%;
+  position: relative;
+  top: -25px;
 }

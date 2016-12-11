@@ -21,10 +21,10 @@
   <div class="form-wrap">
   <h2>Register</h2>
   <div class="form">
-      <input type="text" placeholder="Username" id="username" />
       <input type="text" placeholder="Email" id="email" />
       <input type="password" placeholder="Password" id="password" />
-      <input type="password" placeholder="Password" id="confirmedPassword" />
+      <input type="password" placeholder="Password" id="confirmedPassword"></input>
+      <div class="passwordError">Your entered passwords differ</div>
       <button id="signUp"> Sign up </button>
       <a href="login.html"> <p>Already have an account? Log in</p></a>
     </div>
@@ -41,6 +41,22 @@
     $("#signUp").on("click", function() {
        var email = $("#email").val();
        var password = $("#password").val();
+       var confirmedPassword = $("#confirmedPassword").val();
+       if(email === "" || password === "" || confirmedPassword === "") {
+          $(".passwordError").html("You have to fill all fields");
+          $(".passwordError").slideDown();
+          return false;
+       } else {
+          $(".passwordError").slideDown();
+       }
+
+       if(password != confirmedPassword) {
+          $(".passwordError").html("Your entered passwords differ");
+          $(".passwordError").slideDown();
+          return false;
+       } else {
+          $(".passwordError").slideDown();
+       }
        firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
             alert('Register successful');
          }, function(error) {
