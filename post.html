@@ -9,12 +9,6 @@
         <link type="text/css" rel="stylesheet" href="css/main.css"  media="screen,projection"/>
 <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
-        <script src="js/custom.js"></script>
     </head>
     <body>
 <!--nav Bar-->
@@ -32,49 +26,77 @@
 <!--main content-->
     <div class="container">
         <div class="row">
+<!--tutaj bym widzial to jak na fb w postaci postow od userow. Narazie przykładowe na sztywno-->
 <!--examplePosts will be replaced with auto-generated divs with content from satabase-->
             <div class="col s12">
             <div id="siteHeader"> Recently added </div>
             <div class="post">
+                <div class="postHeader">
+                    <div class="card-panel cyan lighten-2 z-depth-1">
+                        My exam path from 12.12.2016
+                    </div>
+                </div>
                 <div class="col s8">
                     <div class="card-panel grey lighten-5 z-depth-1">
                         <div id="map"></div>
                     </div>
                 </div>
+<!--comment for this route from author-->
+                <div class="commentsWraper">
+                    <div class="col s4">
+                        <div class="card-panel grey lighten-5 z-depth-1">
+                            <div class="row valign-wrapper">
+                                <div class="col s2">
+                                    <img src="images/yuna.jpg" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+                                </div>
+                                <div class="col s10">
+                                    <div class="authorComment">
+                                        <div class="user">
+                                            Adam Adamowicz
+                                        </div>
+                                        <div class="commentContent">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                    
+                        </div>                 
+                    </div>
     <!--comments-->
                     <div class="col s4">
                         <div class="scroll">
                             <div class="card-panel grey lighten-5 z-depth-1">
-                                <div class="postedRoute">
+                                <div class="comment">
                                     <div class="user">
                                         <img src="images/yuna.jpg" alt="" class="circle responsive-img">
                                         Stefan Iksinski
                                     </div>
-                                    <div class="routeDescription">
-                                        Lorem ipsum dolor sit amet
+                                    <div class="commentContent">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                                     </div>
                                 </div>
                             </div>
 
                              <div class="card-panel grey lighten-5 z-depth-1">
-                                <div class="postedRoute">
+                                <div class="comment">
                                     <div class="user">
                                         <img src="images/yuna.jpg" alt="" class="circle responsive-img">
-                                        Adam Rawski
+                                        Stefan Iksinski
                                     </div>
-                                    <div class="routeDescription">
-                                         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                    <div class="commentContent">
+                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                                     </div>
                                 </div>
                             </div>
+
                              <div class="card-panel grey lighten-5 z-depth-1">
-                                <div class="postedRoute">
+                                <div class="comment">
                                     <div class="user">
                                         <img src="images/yuna.jpg" alt="" class="circle responsive-img">
-                                        Agata Werter
+                                        Stefan Iksinski
                                     </div>
-                                    <div class="routeDescription">
-                                        ut labore et dolore magna aliqua. 
+                                    <div class="commentContent">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                                     </div>
                                 </div>
                             </div>
@@ -82,6 +104,18 @@
                     </div>
                 </div>
             </div>
+            </div>
+<!--next page picker-->
+            <div class="col s3 offset-s4">
+                <ul class="pagination">
+                    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                    <li class="active"><a href="#!">1</a></li>
+                    <li class="waves-effect"><a href="#!">2</a></li>
+                    <li class="waves-effect"><a href="#!">3</a></li>
+                    <li class="waves-effect"><a href="#!">4</a></li>
+                    <li class="waves-effect"><a href="#!">5</a></li>
+                    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                </ul>
             </div>
         </div>
     </div>

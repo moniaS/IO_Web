@@ -1,3 +1,4 @@
+/*post HTML*/
 #map
 {
     height: 450px;
@@ -32,6 +33,20 @@ body
 {
     font-family: "Roboto", sans-serif;
     background-color: #FAFAFA;
+}
+/*index HTML*/
+.postedRoute
+{
+    font-size: 20px;
+}
+.routeDescription
+{
+     font-size: 16px;
+}
+.card-panel:hover
+{
+    background-color: aqua;
+    cursor: pointer;
 }
 /*
 * ==============LOGIN/REGISTER FORM ================
