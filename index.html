@@ -306,19 +306,34 @@
       </div>
     </footer>  
 <!--google map script temporary here-->
-<script>
-  function initMap() {
-    var uluru = {lat: -25.363, lng: 131.044};
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
-      center: uluru
-    });
-    var marker = new google.maps.Marker({
-      position: uluru,
-      map: map
-    });
-  }
-</script>
+    <script>
+        var database = firebase.database();
+        var waypointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+
+        <!--google map script temporary here-->
+        function initMap() {
+            var wayPoint = {};
+
+            waypointsRef.on('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var childData = childSnapshot.val();
+                    wayPoint.latitude = childData.coordinate.latitude;
+                    wayPoint.longitude = childData.coordinate.longitude;
+                });
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 8,
+                    center: new google.maps.LatLng(wayPoint.latitude, wayPoint.longitude)
+                });
+
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(wayPoint.latitude, wayPoint.longitude),
+                    map: map
+                });
+
+            });
+        }
+    </script>
 <!--Import jQuery before materialize.js-->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/materialize.min.js"></script>
