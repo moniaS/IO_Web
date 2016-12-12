@@ -20,49 +20,57 @@
     <script src="js/custom.js"></script>
 </head>
 
-    <body>
+<body>
     <ul id="userDropdown" class="dropdown-content">
         <li><a href="#!">My Profile</a></li>
         <li><a href="#!">Settings</a></li>
         <li class="divider"></li>
         <li class="logout-btn"><a>Logout</a></li>
     </ul>
-<!--nav Bar-->
+    <!--nav Bar-->
     <nav>
         <div class="nav-wrapper cyan darken-1">
-         <img class="logoImg" src="images/logo.png">
+            <img class="logoImg" src="images/logo.png">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href=""><i class="material-icons">search</i></a></li>
                 <li><a href=""><i class="material-icons">view_module</i></a></li>
                 <li><a href=""><i class="material-icons">refresh</i></a></li>
-                <li><a class="dropdown-button" href="#!" data-activates="userDropdown"><span class="username"></span><i class="material-icons right">person</i></a></li>
+                <li><a class="dropdown-button" data-activates="userDropdown"><span class="username"></span><i class="material-icons right">person</i></a></li>
             </ul>
-            
+
         </div>
     </nav>
-<!--main content-->
-        <div class="col s4 offset-s2">
-            <div class="header">
-             <div id="slogan">Your success is our success</div>
-            </div>
+    <!--main content-->
+    <div class="col s4 offset-s2">
+        <div class="header">
+            <div id="slogan">Your success is our success</div>
         </div>
+    </div>
     <div class="container">
         <div class="row">
-<!--examplePosts will be replaced with auto-generated divs with content from satabase-->
-            <div class="col s12" >
+            <!--examplePosts will be replaced with auto-generated divs with content from satabase-->
+            <div class="col s12">
                 <div class="row">
-                <div class="col s7" >
-                    <div id="actionBar">
-                    <div class="col s3"><div id="naviButton"><i class="medium material-icons tooltipped"data-position="bottom" data-delay="50" data-tooltip="Let me ride this!">navigation</i></div></div>
-                    <div class="col s3"><div id="favorite"><i class="medium material-icons tooltipped"data-position="bottom" data-delay="50" data-tooltip="Add to: favorite">stars</i></div></div>
-                    <div class="col s3"><div id="gotoLocation"><i class="medium material-icons tooltipped"data-position="bottom" data-delay="50" data-tooltip="Take me to starting point">location_on</i> </div></div>
-                    <div class="col s3"><div id="rideLater"><i class="medium material-icons tooltipped"data-position="bottom" data-delay="50" data-tooltip="Add to: Ride later">done</i> </div></div>
+                    <div class="col s7">
+                        <div id="actionBar">
+                            <div class="col s3">
+                                <div id="naviButton"><i class="medium material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Let me ride this!">navigation</i></div>
+                            </div>
+                            <div class="col s3">
+                                <div id="favorite"><i class="medium material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add to: favorite">stars</i></div>
+                            </div>
+                            <div class="col s3">
+                                <div id="gotoLocation"><i class="medium material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Take me to starting point">location_on</i> </div>
+                            </div>
+                            <div class="col s3">
+                                <div id="rideLater"><i class="medium material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add to: Ride later">done</i> </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s4 offset-l1">
+                        <div class="siteHeader"> Recently added </div>
+                    </div>
                 </div>
-                </div>
-                 <div class="col s4 offset-l1">
-                    <div class="siteHeader"> Recently added </div>
-                </div>
-            </div>
             </div>
             <div class="post">
                 <div class="col s8">
@@ -70,99 +78,115 @@
                         <div id="map"></div>
                     </div>
                 </div>
-<!--postedRoutes-->
+                <!--postedRoutes-->
                 <div class="col s4">
                     <div class="scroll">
-                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped"data-position="right" data-delay="50" data-tooltip="See this route">
+                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped" data-position="right" data-delay="50" data-tooltip="See this route">
                             <div class="postedRoute">
                                 <div class="user">
-                                    <i class="tiny material-icons">perm_identity</i>
-                                    Stefan Iksinski
+                                    <i class="tiny material-icons">perm_identity</i> Stefan Iksinski
                                 </div>
                                 <div class="routeDescription">
                                     Łódź centrum
                                 </div>
                             </div>
                         </div>
-                       <div class="card-panel grey lighten-5 z-depth-1 tooltipped"data-position="right" data-delay="50" data-tooltip="See this route">
+                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped" data-position="right" data-delay="50" data-tooltip="See this route">
                             <div class="postedRoute">
                                 <div class="user">
-                                    <i class="tiny material-icons">perm_identity</i>
-                                    Adam Rawski
+                                    <i class="tiny material-icons">perm_identity</i> Adam Rawski
                                 </div>
                                 <div class="routeDescription">
-                                     Zgierz
+                                    Zgierz
                                 </div>
                             </div>
                         </div>
-                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped"data-position="right" data-delay="50" data-tooltip="See this route">
+                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped" data-position="right" data-delay="50" data-tooltip="See this route">
                             <div class="postedRoute">
                                 <div class="user">
-                                    <i class="tiny material-icons">perm_identity</i>
-                                    Agata Werter
+                                    <i class="tiny material-icons">perm_identity</i> Agata Werter
                                 </div>
                                 <div class="routeDescription">
-                                   Bełchatów-Pabianice 
+                                    Bełchatów-Pabianice
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        <div class="col s8">
-            <div class="waypointInfo">
-                <div class="card-panel grey lighten-5 z-depth-1">
-                    <div class="title">
-                        <span class="value" />
-                    </div>
-                    <div class="description">
-                        <i class="small material-icons tooltipped"data-position="bottom" data-delay="50">description</i>
-                        <span>Description: </span><span class="value" />
-                    </div>
-                    <div class="coordinates">
-                        <i class="small material-icons tooltipped"data-position="bottom" data-delay="50">location_on</i>
-                        <span>Coordinate: </span><span class="value" />
-                    </div>
-                    <div class="comments">
-                        <i class="small material-icons tooltipped"data-position="bottom" data-delay="50">comment</i>
-                        <span>Comments: </span><span class="value" />
-                    </div>
-                    <div class="images">
-                        <i class="small material-icons tooltipped"data-position="bottom" data-delay="50">image</i>
-                        <span>Images: </span><span class="value" />
+            <div class="col s8">
+                <div class="waypointInfo">
+                    <div class="card-panel grey lighten-5 z-depth-1">
+                        <div class="title">
+                            <span class="value" />
+                        </div>
+                        <div class="description">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">description</i>
+                            <span>Description: </span><span class="value" />
+                        </div>
+                        <div class="coordinates">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>
+                            <span>Coordinate: </span><span class="value" />
+                        </div>
+                        <div class="comments">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">comment</i>
+                            <span>Comments: </span><span class="value" />
+                        </div>
+                        <div class="images">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">image</i>
+                            <span>Images: </span><span class="value" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
         </div>
     </div>
-<!--footer-->
+    </div>
+    <!--footer-->
     <footer class="page-footer cyan darken-1">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Footer Content</h5>
-            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Links</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright">
         <div class="container">
-        © 2014 Copyright Text
-        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
-    </footer>  
+        <div class="footer-copyright">
+            <div class="container">
+                © 2014 Copyright Text
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
+    <div id="newWaypointModal" class="modal">
+        <div class="modal-content">
+            <h4><i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>Waypoint</h4>
+            <div class="coordinateOnModal">
+                <span>Latitude: </span>
+                <span class="waypointLatitude"></span><br>
+                <span>Longitude: </span>
+                <span class="waypointLongitude"></span>
+                <input placeholder="Name" class="waypointName" />
+                <input class="waypointDesc" placeholder="Description"></input>
+                <input class="imageUrl" placeholder="Image URL"></input>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat save-btn">Save</a>
+        </div>
+    </div>
     <!--google map script temporary here-->
     <script>
         firebase.auth().onAuthStateChanged(function(currentUser) {
@@ -171,19 +195,15 @@
             }
         });
 
-        $(".logout-btn").on("click", function() {
-            firebase.auth().signOut().then(function() {
-                window.location = "login.html";
-            }, function(error) {
-            });
-        });
-        
         var database = firebase.database();
         var waypointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
-
-        <!--google map script temporary here-->
         function initMap() {
             var waypoints = new Array();
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 8,
+                center: new google.maps.LatLng(51.8550576, 19.000)
+            });
+            google.maps.event.addListener(map, "click", mapClickHandler);
 
             waypointsRef.on('value', function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
@@ -195,39 +215,77 @@
                     wayPoint.description = childData.description;
                     waypoints.push(wayPoint);
                 });
+                initMarkers(waypoints, map);
+            });
+        }
 
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 8,
-                    center: new google.maps.LatLng(waypoints[1].latitude, waypoints[1].longitude)
+        function mapClickHandler(event) {
+            var lat = event.latLng.lat();
+            var lng = event.latLng.lng();
+            $(document).ready(function() {
+
+                $('#newWaypointModal').modal();
+                $('#newWaypointModal').modal('open');
+                $('.waypointLatitude').html(lat);
+                $('.waypointLongitude').html(lng);
+
+                $('.save-btn').on("click", function() {
+                    var waypoint = {};
+                    waypoint.description = $('.waypointDesc').val();
+                    waypoint.latitude = lat;
+                    waypoint.longitude = lng;
+                    addWaypoint(waypoint, firebase.auth().currentUser.uid);
+                })
+            });
+        }
+
+        function initMarkers(waypoints, map) {
+            var infowindow = new google.maps.InfoWindow();
+            var marker;
+            for (var i = 0; i < waypoints.length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(waypoints[i].latitude, waypoints[i].longitude),
+                    map: map
                 });
 
-                var infowindow = new google.maps.InfoWindow();
-                var marker;
-                for (var i = 0; i < waypoints.length; i++) {
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(waypoints[i].latitude, waypoints[i].longitude),
-                        map: map
-                    });
-
-                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                        return function() {
-                            $(".waypointInfo").slideDown();
-                            $(".waypointInfo .title .value").html(waypoints[i].id);
-                            $(".waypointInfo .description .value").html(waypoints[i].description);
-                            $(".waypointInfo .coordinates .value").html(waypoints[i].latitude + ", " + waypoints[i].longitude);
-                            infowindow.setContent(waypoints[i].description);
-                            infowindow.open(map, marker);
-                        }
-                    })(marker, i));
-                }
-            });
-// }
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        $(".waypointInfo").slideDown();
+                        $(".waypointInfo .title .value").html(waypoints[i].id);
+                        $(".waypointInfo .description .value").html(waypoints[i].description);
+                        $(".waypointInfo .coordinates .value").html(waypoints[i].latitude + ", " + waypoints[i].longitude);
+                        infowindow.setContent(waypoints[i].description);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            }
         }
+
+        <!--Adds waypoint only with coordinate, description and authorId-->
+        function addWaypoint(waypoint, authorId) {
+            var rootRef = firebase.database().ref();
+            var waypointsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints');
+            var newWaypoint = waypointsRef.push();
+            newWaypoint.set({
+                coordinate: {
+                    latitude: waypoint.latitude,
+                    longitude: waypoint.longitude
+                },
+                description: waypoint.description,
+                authorId: authorId,
+            });
+        }
+
+        $(".logout-btn").on("click", function() {
+            firebase.auth().signOut().then(function() {
+                window.location = "login.html";
+            }, function(error) {});
+        });
     </script>
     <!--Import jQuery before materialize.js-->
-    
+
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyaOvUpwamVCDPcXn2eLH_JTi8bVrQ9Is&callback=initMap"></script>
 </body>
-    
+
 </html>

@@ -44,7 +44,7 @@
        var password = $("#password").val();
        var confirmedPassword = $("#confirmedPassword").val();
 
-       if(email === "" || password === "" || confirmedPassword === "") {
+       if(email === "" || password === "" || confirmedPassword === "" || username === "") {
           $(".passwordError").html("You have to fill all fields");
           $(".passwordError").slideDown();
           return false;
@@ -54,6 +54,14 @@
 
        if(password != confirmedPassword) {
           $(".passwordError").html("Your entered passwords differ");
+          $(".passwordError").slideDown();
+          return false;
+       } else {
+          $(".passwordError").slideUp();
+       }
+
+       if(password.length < 8) {
+          $(".passwordError").html("Your password must contain at least 8 characters");
           $(".passwordError").slideDown();
           return false;
        } else {
