@@ -21,6 +21,7 @@
   <div class="form-wrap">
   <h2>Register</h2>
   <div class="form">
+      <input type="text" placeholder="Username" id="username" />
       <input type="text" placeholder="Email" id="email" />
       <input type="password" placeholder="Password" id="password" />
       <input type="password" placeholder="Password" id="confirmedPassword"></input>
@@ -42,12 +43,13 @@
        var email = $("#email").val();
        var password = $("#password").val();
        var confirmedPassword = $("#confirmedPassword").val();
+
        if(email === "" || password === "" || confirmedPassword === "") {
           $(".passwordError").html("You have to fill all fields");
           $(".passwordError").slideDown();
           return false;
        } else {
-          $(".passwordError").slideDown();
+          $(".passwordError").slideUp();
        }
 
        if(password != confirmedPassword) {
@@ -55,17 +57,35 @@
           $(".passwordError").slideDown();
           return false;
        } else {
-          $(".passwordError").slideDown();
+          $(".passwordError").slideUp();
        }
+
+
        firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
-            alert('Register successful');
+            firebase.auth().signInWithEmailAndPassword(email, password);
+            var user = firebase.auth().currentUser;
+            var username = $("#username").val();
+            addUser(user.uid, username, email, "nonSubscriber")
+            window.location = "index.html";
          }, function(error) {
             alert('Register failed');
-        });;
-        $(".form-wrap input").each(function() {
-          $(this).val("");
+             $(".form-wrap input").each(function() {
+                $(this).val("");
+            });
         });
     });
+
+    function addUser(uid, username, email, role){
+        var rootRef = firebase.database().ref();
+        var usersRef = rootRef.child('Schemat/Content/Users');
+        var newUser = usersRef.push();
+        newUser.set({
+          uid: uid,
+          name: username,
+          "email": email,
+          "role": role
+        });
+      }
   </script>
 
 

@@ -29,9 +29,6 @@ div.scroll
     font-size: 30px;
     padding-top: 20px;
 }
-nav {
-  opacity: 0.5;
-}
 body
 {
     font-family: "Roboto", sans-serif;
@@ -52,12 +49,27 @@ body
     cursor: pointer;
 }
 .header {
+  height: 300px;
+  background: url(../images/road.jpg);
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  vertical-align: top;
+  transform-origin: center top;
+  transform: 
+    translateZ(-#{$scroll-factor * 2}px)
+    scale(1 + $scroll-factor * 2);
+  position: relative;
+    z-index: -5;
+    top: -70px;
+}
+/*.header {
     background-image: url(../images/road.jpg);
     height: 300px;
     position: relative;
     z-index: -5;
     top: -70px;
-}
+}*/
 #slogan
 {
     text-align: center;
