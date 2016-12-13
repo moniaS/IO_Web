@@ -196,6 +196,7 @@
         });
 
         var database = firebase.database();
+        var routesRef = database.ref('Schemat/Content/Cities/Lodz/Routes');
         var waypointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
         function initMap() {
             var waypoints = new Array();
@@ -216,6 +217,18 @@
                     waypoints.push(wayPoint);
                 });
                 initMarkers(waypoints, map);
+            });
+            routesRef.on('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var trackpoints = new Array();
+                    childSnapshot.child("trackPoints").forEach(function(trackpoint) {
+                        var trackPoint = {};
+                        trackPoint.lat = trackpoint.child("coordinate/latitude").val();
+                        trackPoint.lng = trackpoint.child("coordinate/longitude").val();
+                        trackpoints.push(trackPoint);
+                        initRoute(trackpoints, map);
+                    })
+                })
             });
         }
 
@@ -259,6 +272,17 @@
                     }
                 })(marker, i));
             }
+        }
+
+        function initRoute(trackpoints, map) {
+            var route = new google.maps.Polyline({
+                path: trackpoints,
+                geodesic: true,
+                strokeColor: '#0000FF',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+            route.setMap(map);
         }
 
         <!--Adds waypoint only with coordinate, description and authorId-->
