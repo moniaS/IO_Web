@@ -12,7 +12,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
@@ -178,7 +178,17 @@
                 <span class="waypointLongitude"></span>
                 <input placeholder="Name" class="waypointName" />
                 <input class="waypointDesc" placeholder="Description"></input>
-                <input class="imageUrl" placeholder="Image URL"></input>
+                <form action="#">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input id="imagesInput" type="file" multiple>
+                        </div>
+                    	<div class="file-path-wrapper">
+                			<input class="file-path validate" type="text" placeholder="Upload one or more files">
+      					</div>
+    				</div>
+  				</form>
             </div>
 
         </div>
@@ -220,14 +230,15 @@
             });
             routesRef.on('value', function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
+                    var routeId = childSnapshot.val();
                     var trackpoints = new Array();
                     childSnapshot.child("trackPoints").forEach(function(trackpoint) {
                         var trackPoint = {};
                         trackPoint.lat = trackpoint.child("coordinate/latitude").val();
                         trackPoint.lng = trackpoint.child("coordinate/longitude").val();
                         trackpoints.push(trackPoint);
-                        initRoute(trackpoints, map);
                     })
+                    initRoute(trackpoints, map, routeId.id);
                 })
             });
         }
@@ -247,6 +258,7 @@
                     waypoint.description = $('.waypointDesc').val();
                     waypoint.latitude = lat;
                     waypoint.longitude = lng;
+                    // addImages();
                     addWaypoint(waypoint, firebase.auth().currentUser.uid);
                 })
             });
@@ -274,15 +286,22 @@
             }
         }
 
-        function initRoute(trackpoints, map) {
+        function initRoute(trackpoints, map, routeId) {
             var route = new google.maps.Polyline({
                 path: trackpoints,
                 geodesic: true,
                 strokeColor: '#0000FF',
                 strokeOpacity: 1.0,
-                strokeWeight: 2
+                strokeWeight: 2,
+                clickable: true,
+                id: routeId
             });
             route.setMap(map);
+
+            google.maps.event.addListener(route, 'click', function() {
+                localStorage.setItem("routeId", this.id);
+                window.location = "route.html";
+            });
         }
 
         <!--Adds waypoint only with coordinate, description and authorId-->
@@ -298,6 +317,15 @@
                 description: waypoint.description,
                 authorId: authorId,
             });
+        }
+
+        function addImages() {
+            var files = $("#imagesInput")[0].files;
+            for (var i = 0; i < files.length; i++) {
+
+                // var imagesRef = storage.child("WayPoints/" +files[i].name);
+                // var uploadTask = storage.put(files[i]);
+            }
         }
 
         $(".logout-btn").on("click", function() {

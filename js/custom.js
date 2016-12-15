@@ -6,3 +6,10 @@ var config = {
       messagingSenderId: "771240715747"
     };
 firebase.initializeApp(config);
+
+firebase.auth().onAuthStateChanged(function(currentUser) {
+    if (currentUser) {
+    	$(".username").html(currentUser.email);
+    }
+});
+
