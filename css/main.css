@@ -228,16 +228,30 @@ body {
     position: relative;
     bottom: -10px;
 }
-.waypointInfo .title {
+.waypointDetails {
+    border: 1px solid #bbb;
+    box-shadow: 2px 2px 10px #333;
+    margin: 10px;
+    border-radius: 3px;
+} 
+.waypointDetails div:not(:first-child) {
+  padding: 0 10px;
+}
+.waypointInfo .title, .waypointDetails .waypointName {
   background-color: #00acc1;
   padding: 15px 0;
   margin-bottom: 10px;
   text-align: center;
 }
-.waypointInfo .title .value {
+.waypointInfo .title .value{
   font-weight: normal !important;
   font-size: 30px !important;
   color: white;
+}
+.waypointDetails .waypointName {
+  font-weight: normal;
+  color: white;
+  font-size: 18px !important;
 }
 .waypointInfo .value {
   font-weight: bold;

@@ -69,14 +69,21 @@
                 </div>
             </div>
             <div class="post">
-                <div class="col s8">
+                <div class="col s7">
                     <div class="card-panel grey lighten-5 z-depth-1">
                         <div id="map"></div>
                     </div>
                 </div>
+                <div class="col s5">
+                    <div class="scroll">
+                        <div class="card-panel grey lighten-5 z-depth-1" data-position="right" data-delay="50">
+                            <div class="closestWaypoints">
+                            </div>
+                        </div>
+                    </div>            
+                </div>
             </div>
         </div>
-    </div>
     </div>
     <!--footer-->
     <footer class="page-footer cyan darken-1">
@@ -120,13 +127,12 @@
                             <span>File</span>
                             <input id="imagesInput" type="file" multiple>
                         </div>
-                    <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="Upload one or more files">
-      </div>
-    </div>
-  </form>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                        </div>
+                    </div>
+                </form>
             </div>
-
         </div>
         <div class="modal-footer">
             <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
@@ -169,9 +175,9 @@
 
         function initClosestWaypoints(trackpoints, map, maxDistance) {
             var wayPointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+            var addedWaypoints = new Array();
             for (var i = 0; i < trackpoints.length; i++) {
                  var trackPoint = new google.maps.LatLng(trackpoints[i].lat, trackpoints[i].lng);
-                 var shortest_distance = null;
 
                  wayPointsRef.on('value',function(snapshot) {
                     snapshot.forEach(function(childSnapshot) {
@@ -179,11 +185,13 @@
 
                         var wayPoint = new google.maps.LatLng(childData.coordinate.latitude, childData.coordinate.longitude);
                         var distance = (google.maps.geometry.spherical.computeDistanceBetween(trackPoint, wayPoint)/1000).toFixed(2);
-                        if(distance < maxDistance) {
+                        if(distance < maxDistance && $.inArray(childData.id, addedWaypoints) === -1) {
+                            addedWaypoints.push(childData.id);
                             var marker = new google.maps.Marker({
                                 position: wayPoint,
                                 map: map
                             });
+                            $(".closestWaypoints").append("<div class='waypointDetails'><div class='waypointName'>" + childData.id + "</div><div class='waypointDesc'>Description: " + childData.description + "</div><div class='waypointCoordinate'>Latitude: " + childData.coordinate.latitude + "\n Longitude: " + childData.coordinate.longitude + "</div></div>");
                         }
                     })
                 })
