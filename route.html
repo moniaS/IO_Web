@@ -133,7 +133,6 @@
             <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat save-btn">Save</a>
         </div>
     </div>
-    <!--google map script temporary here-->
     <script>
         var database = firebase.database();
         var routeRef = database.ref('Schemat/Content/Cities/Lodz/Routes/' + localStorage.getItem("routeId"));
@@ -165,6 +164,30 @@
                 clickable: true,
             });
             route.setMap(map);
+            initClosestWaypoints(trackpoints, map, 1.5);
+        }
+
+        function initClosestWaypoints(trackpoints, map, maxDistance) {
+            var wayPointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+            for (var i = 0; i < trackpoints.length; i++) {
+                 var trackPoint = new google.maps.LatLng(trackpoints[i].lat, trackpoints[i].lng);
+                 var shortest_distance = null;
+
+                 wayPointsRef.on('value',function(snapshot) {
+                    snapshot.forEach(function(childSnapshot) {
+                        var childData = childSnapshot.val();
+
+                        var wayPoint = new google.maps.LatLng(childData.coordinate.latitude, childData.coordinate.longitude);
+                        var distance = (google.maps.geometry.spherical.computeDistanceBetween(trackPoint, wayPoint)/1000).toFixed(2);
+                        if(distance < maxDistance) {
+                            var marker = new google.maps.Marker({
+                                position: wayPoint,
+                                map: map
+                            });
+                        }
+                    })
+                })
+            }
         }
 
         $(".logout-btn").on("click", function() {
