@@ -84,6 +84,33 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+             <div class="col s7">
+                <div class="waypointInfo">
+                    <div class="card-panel grey lighten-5 z-depth-1">
+                        <div class="title">
+                            <span class="value" />
+                        </div>
+                        <div class="description">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">description</i>
+                            <span>Description: </span><span class="value" />
+                        </div>
+                        <div class="coordinates">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>
+                            <span>Coordinate: </span><span class="value" />
+                        </div>
+                        <div class="comments">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">comment</i>
+                            <span>Comments: </span><span class="value" />
+                        </div>
+                        <div class="images">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">image</i>
+                            <span>Images: </span><span class="value" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!--footer-->
     <footer class="page-footer cyan darken-1">
@@ -191,7 +218,23 @@
                                 position: wayPoint,
                                 map: map
                             });
+
+                            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                                 return function() {
+                                    $(".waypointInfo").slideDown();
+                                    $(".waypointInfo .title .value").html(childData.id);
+                                    $(".waypointInfo .description .value").html(childData.description);
+                                    $(".waypointInfo .coordinates .value").html(childData.coordinate.latitude + ", " + childData.coordinate.longitude);
+                                }       
+                            })(marker, i));
                             $(".closestWaypoints").append("<div class='waypointDetails'><div class='waypointName'>" + childData.id + "</div><div class='waypointDesc'>Description: " + childData.description + "</div><div class='waypointCoordinate'>Latitude: " + childData.coordinate.latitude + "\n Longitude: " + childData.coordinate.longitude + "</div></div>");
+
+                             $(".closestWaypoints").off("click", "*").delegate(".waypointDetails", "click", function() {
+                                $(".waypointInfo").slideDown();
+                                $(".waypointInfo .title .value").html(childData.id);
+                                $(".waypointInfo .description .value").html(childData.description);
+                                $(".waypointInfo .coordinates .value").html(childData.coordinate.latitude + ", " + childData.coordinate.longitude);
+                            });
                         }
                     })
                 })

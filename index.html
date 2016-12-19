@@ -175,7 +175,9 @@
                 <span>Latitude: </span>
                 <span class="waypointLatitude"></span><br>
                 <span>Longitude: </span>
-                <span class="waypointLongitude"></span>
+                <span class="waypointLongitude"></span><br>
+                <span>Address: </span>
+                <span class="waypointAddress"></span>
                 <input placeholder="Name" class="waypointName" />
                 <input class="waypointDesc" placeholder="Description"></input>
                 <form action="#">
@@ -184,11 +186,11 @@
                             <span>File</span>
                             <input id="imagesInput" type="file" multiple>
                         </div>
-                    	<div class="file-path-wrapper">
-                			<input class="file-path validate" type="text" placeholder="Upload one or more files">
-      					</div>
-    				</div>
-  				</form>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                        </div>
+                    </div>
+                </form>
             </div>
 
         </div>
@@ -208,6 +210,7 @@
         var database = firebase.database();
         var routesRef = database.ref('Schemat/Content/Cities/Lodz/Routes');
         var waypointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+
         function initMap() {
             var waypoints = new Array();
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -246,19 +249,37 @@
         function mapClickHandler(event) {
             var lat = event.latLng.lat();
             var lng = event.latLng.lng();
+            var geocoder = new google.maps.Geocoder;
+            var address;
+
             $(document).ready(function() {
+                var waypoint = {
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng)
+                };
+                geocoder.geocode({
+                    'location': waypoint
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[1]) {
+                            address = results[1].formatted_address;
+                            $('.waypointAddress').html(address);
+                        }
+                    }
+                });
 
                 $('#newWaypointModal').modal();
                 $('#newWaypointModal').modal('open');
                 $('.waypointLatitude').html(lat);
                 $('.waypointLongitude').html(lng);
+                $('.waypointAddress').html("");
 
                 $('.save-btn').on("click", function() {
                     var waypoint = {};
                     waypoint.description = $('.waypointDesc').val();
                     waypoint.latitude = lat;
                     waypoint.longitude = lng;
-                    // addImages();
+                    waypoint.address = $('.waypointAddress').html();
                     addWaypoint(waypoint, firebase.auth().currentUser.uid);
                 })
             });
@@ -266,24 +287,25 @@
 
         function initMarkers(waypoints, map) {
             var infowindow = new google.maps.InfoWindow();
+            var geocoder = new google.maps.Geocoder;
             var marker;
             for (var i = 0; i < waypoints.length; i++) {
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(waypoints[i].latitude, waypoints[i].longitude),
                     map: map
                 });
-
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                    return function() {
-                        $(".waypointInfo").slideDown();
-                        $(".waypointInfo .title .value").html(waypoints[i].id);
-                        $(".waypointInfo .description .value").html(waypoints[i].description);
-                        $(".waypointInfo .coordinates .value").html(waypoints[i].latitude + ", " + waypoints[i].longitude);
-                        infowindow.setContent(waypoints[i].description);
-                        infowindow.open(map, marker);
-                    }
-                })(marker, i));
             }
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    $(".waypointInfo").slideDown();
+                    $(".waypointInfo .title .value").html(waypoints[i].id);
+                    $(".waypointInfo .description .value").html(waypoints[i].description);
+                    $(".waypointInfo .coordinates .value").html(waypoints[i].latitude + ", " + waypoints[i].longitude);
+                    infowindow.setContent(waypoints[i].description);
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
         }
 
         function initRoute(trackpoints, map, routeId) {
@@ -316,6 +338,7 @@
                 },
                 description: waypoint.description,
                 authorId: authorId,
+                address: waypoint.address
             });
         }
 
