@@ -331,6 +331,7 @@
             var rootRef = firebase.database().ref();
             var waypointsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints');
             var newWaypoint = waypointsRef.push();
+            var newWaypointId = newWaypoint.key;
             newWaypoint.set({
                 coordinate: {
                     latitude: waypoint.latitude,
@@ -338,8 +339,9 @@
                 },
                 description: waypoint.description,
                 authorId: authorId,
-                address: waypoint.address
-            });
+                address: waypoint.address,
+                id: newWaypointId
+             });
         }
 
         function addImages() {
