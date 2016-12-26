@@ -269,3 +269,31 @@ body {
   position: relative;
   top: -25px;
 }
+.waypointInfo .comment, 
+.waypointInfo .yourComment{
+  border: 1px solid #bbb;
+  box-shadow: 1px 1px 3px #333;
+  margin: 10px;
+  border-radius: 3px;
+  background-color: #ecf0f1;
+  padding: 10px;
+}
+.waypointInfo .comment * {
+  display: block;
+}
+.waypointInfo .commentAuthorId {
+  color: #00acc1;
+  font-size: 16px;
+}
+.waypointInfo .commentDate {
+  color: #AAAAAA;
+}
+.waypointInfo textarea {
+  border-radius: 4px;
+  background-color: #FAFAFA;
+}
+.waypointInfo button {
+  background: #00acc1;
+  color: white;
+  padding: 0px 15px;
+}
