@@ -99,13 +99,13 @@
                             <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>
                             <span>Coordinate: </span><span class="value" />
                         </div>
-                        <div class="comments">
-                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">comment</i>
-                            <span>Comments: </span><span class="value" /><div class="yourComment"><textarea rows="4" cols="50" placeholder="your comment"></textarea><button class="right-align">ADD</button></div>
-                        </div>
                         <div class="images">
                             <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">image</i>
                             <span>Images: </span><span class="value" />
+                        </div>
+                        <div class="comments">
+                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">comment</i>
+                            <span>Comments: </span><span class="value" /><div class="newComment"><textarea rows="4" cols="50" placeholder="your comment"></textarea><button class="addCommentBtn">ADD</button></div>
                         </div>
                     </div>
                 </div>
@@ -221,6 +221,7 @@
                             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                                  return function() {
                                     $(".waypointInfo").slideDown();
+                                    scrollToWaypointInfo();
                                     $(".waypointInfo .title .value").html(childData.id);
                                     $(".waypointInfo .description .value").html(childData.description);
                                     $(".waypointInfo .coordinates .value").html(childData.coordinate.latitude + ", " + childData.coordinate.longitude);
@@ -239,21 +240,53 @@
             }, function(error) {});
         });
 
+        $(".addCommentBtn").on("click", function() {
+            addComment(firebase.auth().currentUser.uid, $(".newComment textarea").val());
+            $(".newComment textarea").val("");
+        })
+
         $(".closestWaypoints").delegate(".waypointDetails", "click", function(event) {
             $(".waypointInfo").slideDown();
+            scrollToWaypointInfo();
             $(".comment").remove();
             var chosenWaypoint = database.ref('Schemat/Content/Cities/Lodz/WayPoints/' + $(this).find('.waypointName').html());
-            chosenWaypoint.on('value', function(snapshot) {
+                chosenWaypoint.on('value', function(snapshot) {
                  snapshot.child("comments").forEach(function(childSnapshot) {
                     childSnapshotData = childSnapshot.val();
-                    $(".comments").append("<div class='comment'><span class='commentAuthorId'>" + childSnapshotData.authorId + "</span><span class='commentDate'>" + (new Date(childSnapshotData.timestamp)).toLocaleString() + "</span><span class='commentMessage'>" + childSnapshotData.message + "</span></div>")
+                    appendComment(childSnapshotData.authorId, 
+                              (new Date(childSnapshotData.timestamp)).toLocaleString(),childSnapshotData.message);
                 }) 
                 var snapshotData = snapshot.val()
                 $(".waypointInfo .title .value").html(snapshotData.id);
                 $(".waypointInfo .description .value").html(snapshotData.description);
                 $(".waypointInfo .coordinates .value").html(snapshotData.coordinate.latitude + ", " + snapshotData.coordinate.longitude);   
-            })   
-        });        
+            })
+         });
+        function addComment(authorId, message) {
+            console.log('jestem w add comment');
+            var seconds = + new Date();
+            // appendComment(authorId, (new Date(seconds)).toLocaleString(), message);
+            var rootRef = firebase.database().ref();;
+            var waypointId = $(".comments").closest(".waypointInfo").find(".title .value").html();
+            var commentsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId + '/comments/');
+            var newComment = commentsRef.push();
+            newComment.set({
+                authorId: authorId,
+                message: message,
+                timestamp: seconds
+            });
+            $(".comments").append("<div class='comment'><span class='commentAuthorId'>" + authorId + "</span><span class='commentDate'>" + (new Date(seconds)).toLocaleString() + "</span><span class='commentMessage'>" + message + "</span></div>")
+
+        }   
+        function appendComment(authorId, date, message) {
+            $(".comments").append("<div class='comment'><span class='commentAuthorId'>" + authorId + "</span><span class='commentDate'>" + date + "</span><span class='commentMessage'>" + message + "</span></div>")
+        }  
+
+        function scrollToWaypointInfo() {
+            $('html,body').animate({
+                scrollTop: $(".waypointInfo").offset().top},
+                'slow');
+        }
     </script>
     <!--Import jQuery before materialize.js-->
 
