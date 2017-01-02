@@ -8,11 +8,11 @@
 {
     font-size: 20px;
 }
-div.scroll 
+div.scroll
 {
     height:500px;
     max-height: 500px;
-    overflow: scroll;
+    overflow: auto;
 }
 .authorComment
 {
@@ -56,7 +56,7 @@ body
   position: relative;
   vertical-align: top;
   transform-origin: center top;
-  transform: 
+  transform:
     translateZ(-#{$scroll-factor * 2}px)
     scale(1 + $scroll-factor * 2);
   position: relative;
@@ -233,20 +233,25 @@ body {
     box-shadow: 2px 2px 10px #333;
     margin: 10px;
     border-radius: 3px;
-} 
+}
 .waypointDetails div:not(:first-child) {
   padding: 0 10px;
 }
-.waypointInfo .title, .waypointDetails .waypointName {
+/*.waypointInfo .title, .value {*/
+  /*padding: 15px 0;*/
+  /*margin-bottom: 10px;*/
+  /*text-align: center;*/
+/*}*/
+.waypointDetails .waypointName {
   background-color: #00acc1;
-  padding: 15px 0;
+  padding: 5px 0;
   margin-bottom: 10px;
   text-align: center;
 }
 .waypointInfo .title .value{
-  font-weight: normal !important;
-  font-size: 30px !important;
-  color: white;
+    font-weight: normal !important;
+    font-size: 30px !important;
+    color: #00acc1;
 }
 .waypointDetails .waypointName {
   font-weight: normal;
@@ -269,8 +274,8 @@ body {
   position: relative;
   top: -25px;
 }
-.waypointInfo .comment, 
-.waypointInfo .yourComment{
+.commentSection .comment,
+.commentSection .newComment{
   border: 1px solid #bbb;
   box-shadow: 1px 1px 3px #333;
   margin: 10px;
@@ -278,22 +283,38 @@ body {
   background-color: #ecf0f1;
   padding: 10px;
 }
-.waypointInfo .comment * {
+.commentSection .comment * {
   display: block;
 }
-.waypointInfo .commentAuthorId {
+.commentSection .commentAuthorId {
   color: #00acc1;
   font-size: 16px;
 }
-.waypointInfo .commentDate {
+.commentSection .commentDate {
   color: #AAAAAA;
 }
-.waypointInfo textarea {
+.commentSection textarea {
   border-radius: 4px;
   background-color: #FAFAFA;
 }
-.waypointInfo button {
+.commentSection button {
   background: #00acc1;
   color: white;
   padding: 0px 15px;
 }
+.commentSection .newComment {
+  margin: 10px auto;
+}
+.commentSection {
+  background: white;
+  padding: 10px;
+}
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #00acc1;
+    margin: 1em 0;
+    padding: 0;
+}
+

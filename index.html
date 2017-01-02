@@ -17,6 +17,8 @@
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-storage.js"></script>
+
     <script src="js/custom.js"></script>
 </head>
 
@@ -281,6 +283,7 @@
                     waypoint.longitude = lng;
                     waypoint.address = $('.waypointAddress').html();
                     addWaypoint(waypoint, firebase.auth().currentUser.uid);
+
                 })
             });
         }
@@ -342,14 +345,32 @@
                 address: waypoint.address,
                 id: newWaypointId
              });
+            addImages(newWaypointId);
         }
 
-        function addImages() {
+        function addImages(newWaypointId) {
             var files = $("#imagesInput")[0].files;
-            for (var i = 0; i < files.length; i++) {
+            var storage = firebase.storage();
+            var database = firebase.database().ref();
+            var waypointRef = database.child('Schemat/Content/Cities/Lodz/WayPoints/' + newWaypointId + "/photos");
 
-                // var imagesRef = storage.child("WayPoints/" +files[i].name);
-                // var uploadTask = storage.put(files[i]);
+            for (var i = 0; i < files.length; i++) {
+                var newImage = waypointRef.push();
+                var uploadTask = storage.ref("WayPoints/" + newWaypointId  + "/" + files[i].name).put(files[i]);
+                uploadTask.on('state_changed', function(snapshot){
+                }, function(error) {
+                    // Handle unsuccessful uploads
+                }, function() {
+                    // Handle successful uploads on complete
+                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                    var downloadURL = uploadTask.snapshot.downloadURL;
+                    newImage.set({
+//                        imagePath: files[i].name,
+                        authorId: firebase.auth().currentUser.uid,
+                        downloadUrl: downloadURL
+                    })
+                });
+
             }
         }
 
