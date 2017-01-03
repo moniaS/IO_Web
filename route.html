@@ -95,11 +95,7 @@
                             <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>
                             <span>Coordinate: </span><span class="value" />
                         </div>
-                        <div class="images">
-                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">image</i>
-                            <span>Images: </span><span class="value" />
-                            <img id="mainImage" height="400" width="400"/>
-                        </div>
+                        <ul id="images"></ul>
                     </div>
                 </div>
             </div>
@@ -294,9 +290,17 @@
         function getImagesFromStorage(waypointId) {
             var chosenWaypoint = database.ref('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId);
             chosenWaypoint.on('value', function(snapshot) {
+                $("#images li").remove();
                 snapshot.child("photos").forEach(function(childSnapshot) {
                     var childData = childSnapshot.val();
-                    $("#mainImage").attr('src', childData.downloadUrl);
+                    var ul = document.getElementById("images");
+                    var li = document.createElement("li");
+                    li.setAttribute("class", "imageLi")
+                    var img = document.createElement("img");
+                    img.setAttribute("src", childData.downloadUrl);
+                    img.setAttribute("class", "gallery-img");
+                    li.appendChild(img);
+                    ul.appendChild(li);
                 })
             })
         }
