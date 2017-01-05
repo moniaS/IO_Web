@@ -87,11 +87,13 @@
         var rootRef = firebase.database().ref();
         var usersRef = rootRef.child('Schemat/Content/Users');
         var newUser = usersRef.push();
+        var newUserId = newUser.key;
         newUser.set({
           uid: uid,
           name: username,
-          "email": email,
-          "role": role
+          email: email,
+          role: role,
+          id: newUserId
         });
       }
   </script>

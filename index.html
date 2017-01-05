@@ -82,38 +82,7 @@
                 </div>
                 <!--postedRoutes-->
                 <div class="col s4">
-                    <div class="scroll">
-                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped" data-position="right" data-delay="50" data-tooltip="See this route">
-                            <div class="postedRoute">
-                                <div class="user">
-                                    <i class="tiny material-icons">perm_identity</i> Stefan Iksinski
-                                </div>
-                                <div class="routeDescription">
-                                    Łódź centrum
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped" data-position="right" data-delay="50" data-tooltip="See this route">
-                            <div class="postedRoute">
-                                <div class="user">
-                                    <i class="tiny material-icons">perm_identity</i> Adam Rawski
-                                </div>
-                                <div class="routeDescription">
-                                    Zgierz
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-panel grey lighten-5 z-depth-1 tooltipped" data-position="right" data-delay="50" data-tooltip="See this route">
-                            <div class="postedRoute">
-                                <div class="user">
-                                    <i class="tiny material-icons">perm_identity</i> Agata Werter
-                                </div>
-                                <div class="routeDescription">
-                                    Bełchatów-Pabianice
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="scroll" id="recentlyAddedRoutes"></div>
                 </div>
             </div>
             <div class="col s8">
@@ -212,6 +181,10 @@
         var database = firebase.database();
         var routesRef = database.ref('Schemat/Content/Cities/Lodz/Routes');
         var waypointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+
+        $( document ).ready(function() {
+            initRecentlyAddedRoutes();
+        });
 
         function initMap() {
             var waypoints = new Array();
@@ -372,6 +345,46 @@
                 });
 
             }
+        }
+
+        function initRecentlyAddedRoutes() {
+            var routesRef = database.ref('Schemat/Content/Cities/Lodz/Routes');
+            routesRef.orderByChild("Route").on('value', function(snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childData = childSnapshot.val();
+                    var recentlyAddedRoutesDiv = $("#recentlyAddedRoutes");
+                    var routeCard = $('<div />')
+                        .attr("class", "card-panel grey lighten-5 z-depth-1 tooltipped");
+                    var routeDiv = $('<div />')
+                        .attr("class", "postedRoute")
+                    var authorDiv = $('<div />')
+                        .attr("class", "routeAuthor")
+                    var descDiv = $('<div />')
+                        .attr("class", "routeDescription")
+                    routeDiv.append(authorDiv);
+                    routeDiv.append(descDiv);
+                    routeCard.append(routeDiv);
+                    recentlyAddedRoutesDiv.append(routeCard);
+                    findUsernameById(childData.authorId, function (username) {
+                        if(username != undefined) {
+                            authorDiv.html(username);
+                            descDiv.html(childData.name)
+                        }
+                    });
+                })
+            });
+        }
+
+        function findUsernameById(userId, callback) {
+            var usersRef = firebase.database().ref("Schemat/Content/Users");
+            var username;
+            usersRef.orderByChild('uid').equalTo(userId).on("value", function (snapshot) {
+                var data = snapshot.val();
+                if(data != null) {
+                    username = data[Object.keys(data)[0]].name;
+                    callback(username)
+                }
+            })
         }
 
         $(".logout-btn").on("click", function() {
