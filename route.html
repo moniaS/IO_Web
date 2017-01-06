@@ -18,6 +18,7 @@
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-storage.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
 
     <script src="js/custom.js"></script>
 </head>
@@ -70,45 +71,12 @@
                         <div id="map"></div>
                 </div>
                 <div class="col s4">
-                    <div class="scroll">
-                        <div data-position="right" data-delay="50">
-                            <div class="closestWaypoints">
-                            </div>
+                    <div data-position="right" data-delay="50">
+                        <div class="closestWaypoints scroll">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-             <div class="col s7">
-                <div class="waypointInfo">
-                    <div class="card-panel grey lighten-5 z-depth-1">
-                        <div class="title">
-                            <span class="value" />
-                        </div>
-                        <hr class="line">
-                        <div class="description">
-                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">description</i>
-                            <span>Description: </span><span class="value" />
-                        </div>
-                        <div class="coordinates">
-                            <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>
-                            <span>Coordinate: </span><span class="value" />
-                        </div>
-                        <ul id="images"></ul>
-                    </div>
-                </div>
-            </div>
-          <div class="col s5">
-            <div class="commentSection card-panel grey lighten-5 z-depth-1">
-              <div class="newComment">
-                <textarea rows="4" cols="50" placeholder="your comment"></textarea>
-                <button class="addCommentBtn">ADD</button>
-              </div>
-              <div class="comments">
-              </div>
-            </div>
-          </div>
         </div>
     </div>
     <!--footer-->
@@ -137,37 +105,49 @@
             </div>
         </div>
     </footer>
-    <div id="newWaypointModal" class="modal">
+    <div id="waypointInfoModal" class="modal">
         <div class="modal-content">
-            <h4><i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>Waypoint</h4>
-            <div class="coordinateOnModal">
-                <span>Latitude: </span>
-                <span class="waypointLatitude"></span><br>
-                <span>Longitude: </span>
-                <span class="waypointLongitude"></span>
-                <input placeholder="Name" class="waypointName" />
-                <input class="waypointDesc" placeholder="Description"/>
-                <form action="#">
-                    <div class="file-field input-field">
-                        <div class="btn">
-                            <span>File</span>
-                            <input id="imagesInput" type="file" multiple>
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" placeholder="Upload one or more files">
-                        </div>
+            <div class="slider">
+                <ul class="slides"></ul>
+                <input type="file" id="uploadFileInput" multiple style="display: none">
+                <button id="uploadFileBtn" style="float: right; top: -10px">ADD PHOTO</button>
+            </div>
+            <div class="waypointContainer">
+            <div class="waypointInfo">
+                <div class="card-panel grey lighten-5 z-depth-1">
+                    <div class="title">
+                        <span class="value" />
                     </div>
-                </form>
+                    <hr class="line">
+                    <div class="description">
+                        <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">description</i>
+                        <span>Description: </span><span class="value" />
+                    </div>
+                    <div class="address">
+                        <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>
+                        <span>Address: </span><span class="value" />
+                    </div>
+                </div>
+            </div>
+            <div class="commentSection card-panel grey lighten-5 z-depth-1">
+                <div class="newComment">
+                    <textarea rows="4" cols="50" placeholder="your comment"></textarea>
+                    <button class="addCommentBtn">ADD</button>
+                </div>
+                <div class="comments">
+                </div>
             </div>
         </div>
+
+        </div>
         <div class="modal-footer">
-            <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-            <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat save-btn">Save</a>
         </div>
     </div>
     <script>
         var database = firebase.database();
         var routeRef = database.ref('Schemat/Content/Cities/Lodz/Routes/' + localStorage.getItem("routeId"));
+
+        <!--Initializes map-->
         function initMap() {
             routeRef.on('value', function(snapshot) {
                 var trackpoints = [];
@@ -177,14 +157,16 @@
                         trackPoint.lng = childSnapshot.child("coordinate/longitude").val();
                         trackpoints.push(trackPoint);
                 })
+                var middleTrackpoint = parseInt(trackpoints.length/2);
                 var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 8,
-                    center: new google.maps.LatLng(trackpoints[0].lat, trackpoints[0].lng)
+                    zoom: 16,
+                    center: new google.maps.LatLng(trackpoints[middleTrackpoint].lat, trackpoints[middleTrackpoint].lng)
                 });
                 initRoute(trackpoints, map);
             });
         }
 
+        <!--Initializes route on map by trackpoints-->
         function initRoute(trackpoints, map) {
             var route = new google.maps.Polyline({
                 path: trackpoints,
@@ -198,35 +180,35 @@
             initClosestWaypoints(trackpoints, map, 10);
         }
 
+        <!--Initializes the closest waypoints to route-->
         function initClosestWaypoints(trackpoints, map, maxDistance) {
             var wayPointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
-            var addedWaypoints = new Array();
+            var addedWaypoints = [];
             for (var i = 0; i < trackpoints.length; i++) {
-                 var trackPoint = new google.maps.LatLng(trackpoints[i].lat, trackpoints[i].lng);
+                var trackPoint = new google.maps.LatLng(trackpoints[i].lat, trackpoints[i].lng);
 
-                 wayPointsRef.on('value',function(snapshot) {
-                    snapshot.forEach(function(childSnapshot) {
+                wayPointsRef.on('value', function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
                         var childData = childSnapshot.val();
                         var wayPoint = new google.maps.LatLng(childData.coordinate.latitude, childData.coordinate.longitude);
-                        var distance = (google.maps.geometry.spherical.computeDistanceBetween(trackPoint, wayPoint)/1000).toFixed(2);
-                        if(distance < maxDistance && $.inArray(childData.id, addedWaypoints) === -1) {
+                        var distance = (google.maps.geometry.spherical.computeDistanceBetween(trackPoint, wayPoint) / 1000).toFixed(2);
+                        if (distance < maxDistance && $.inArray(childData.id, addedWaypoints) === -1) {
                             addedWaypoints.push(childData.id);
                             var marker = new google.maps.Marker({
                                 position: wayPoint,
                                 map: map
                             });
 
-                            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                                 return function() {
-                                    $(".waypointInfo").slideDown();
-                                    scrollToWaypointInfo();
-                                    $(".waypointInfo .title .value").html(childData.id);
-                                    $(".waypointInfo .description .value").html(childData.description);
-                                    $(".waypointInfo .coordinates .value").html(childData.coordinate.latitude + ", " + childData.coordinate.longitude);
-                                     getImagesFromStorage(childData.id);
-                                 }
+                            google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                                return function () {
+                                    waypointClickHandler(childData.id);
+                                }
                             })(marker, i));
-                            $(".closestWaypoints").append("<div class='waypointDetails'><div class='waypointName'>" + childData.id + "</div><div class='waypointDesc'>Description: " + childData.description + "</div></div>");
+                            findUsernameById(childData.authorId, function (username) {
+                                if(username != undefined) {
+                                    $(".closestWaypoints").append("<div class='waypointDetails'><div class='waypointName'>" + childData.id + "</div><div class='waypointDesc'><div class='waypointDesc'>Author: " + username + "</div>Description: " + childData.description + "</div></div>");
+                                }
+                            });
                         }
                     })
                 })
@@ -246,68 +228,85 @@
         })
 
         $(".closestWaypoints").delegate(".waypointDetails", "click", function(event) {
-            $(".waypointInfo").slideDown();
-            $(".commentSection").slideDown();
-            $(".comment").remove();
-            setTimeout(scrollToWaypointInfo(), 300);
-            var chosenWaypoint = database.ref('Schemat/Content/Cities/Lodz/WayPoints/' + $(this).find('.waypointName').html());
-                chosenWaypoint.on('value', function(snapshot) {
-                 snapshot.child("comments").forEach(function(childSnapshot) {
-                     var childSnapshotData = childSnapshot.val();
-                     appendComment(childSnapshotData.authorId,
-                              (new Date(childSnapshotData.timestamp)).toLocaleString(),childSnapshotData.message);
-                })
-                var snapshotData = snapshot.val();
-                 getImagesFromStorage(snapshotData.id);
-                $(".waypointInfo .title .value").html(snapshotData.id);
-                $(".waypointInfo .description .value").html(snapshotData.description);
-                $(".waypointInfo .coordinates .value").html(snapshotData.coordinate.latitude + ", " + snapshotData.coordinate.longitude);
-            })
+              waypointClickHandler($(event.target).closest('.waypointName').html());
          });
+
+        function waypointClickHandler(waypointId) {
+            $(".slides").find("li").remove();
+            $(".indicators").remove();
+            $(".slider").slider();
+            $(".slider").slider('pause');
+            var chosenWaypoint = database.ref('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId);
+            chosenWaypoint.on('value', function(snapshot) {
+                $(".comment").remove();
+                var snapshotData = snapshot.val();
+                snapshot.child("comments").forEach(function(childSnapshot) {
+                    var childSnapshotData = childSnapshot.val();
+                    appendComment(childSnapshotData.authorId,
+                        (new Date(childSnapshotData.timestamp)).toLocaleString(),childSnapshotData.message);
+                })
+                $("#waypointInfoModal").modal({
+                        ready: function (modal, trigger) {
+                            modal.data("id", snapshotData.id)
+                        }
+                    }
+                );
+                $("#waypointInfoModal").modal('open');
+                $(".waypointInfo .title .value").html(snapshotData.description);
+                $(".waypointInfo .address .value").html(snapshotData.address);
+                getImagesFromStorage(snapshotData.id);
+                if($(".slides").find("li").length == 0) {
+                    $(".slider").hide();
+                } else {
+                    $(".slider").show();
+                }
+            })
+
+        }
+        <!--Adds new comment to waypoint-->
         function addComment(authorId, message) {
             var seconds = + new Date();
             $(".comment").remove();
             var rootRef = firebase.database().ref();
-            var waypointId = $(".waypointInfo").find(".title .value").html();
+            var waypointId = $("#waypointInfoModal").data("id");
             var commentsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId + '/comments/');
+            commentsRef.once("value", function (snapshot) {
+
+            })
             var newComment = commentsRef.push();
             newComment.set({
                 authorId: authorId,
                 message: message,
                 timestamp: seconds
             });
+            $(".slides").find("li").remove();
+            $(".indicators").remove();
+            getImagesFromStorage(waypointId);
         }
+
+        <!--Append comment in comments section-->
         function appendComment(authorId, date, message) {
             $(".comments").prepend("<div class='comment'><span class='commentAuthorId'>" + authorId + "</span><span class='commentDate'>" + date + "</span><span class='commentMessage'>" + message + "</span></div>")
         }
 
+        <!--Scrolls to waypoint info section-->
         function scrollToWaypointInfo() {
             $('html,body').animate({
                 scrollTop: $(".waypointInfo").offset().top},
                 'slow');
         }
 
-        function getImagesFromStorage(waypointId) {
-            var chosenWaypoint = database.ref('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId);
-            chosenWaypoint.on('value', function(snapshot) {
-                $("#images li").remove();
-                snapshot.child("photos").forEach(function(childSnapshot) {
-                    var childData = childSnapshot.val();
-                    var ul = document.getElementById("images");
-                    var li = document.createElement("li");
-                    li.setAttribute("class", "imageLi")
-                    var img = document.createElement("img");
-                    img.setAttribute("src", childData.downloadUrl);
-                    img.setAttribute("class", "gallery-img");
-                    li.appendChild(img);
-                    ul.appendChild(li);
-                })
-            })
-        }
+        $("#uploadFileBtn").on("click", function () {
+            $("#uploadFileInput").click();
+        })
+
+        $("#uploadFileInput").on("change input", function () {
+            addImages($("#waypointInfoModal").data("id"),$("#uploadFileInput")[0].files);
+
+        })
     </script>
     <!--Import jQuery before materialize.js-->
 
-    <script type="text/javascript" src="js/materialize.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyaOvUpwamVCDPcXn2eLH_JTi8bVrQ9Is&callback=initMap"></script>
 </body>
 </html>

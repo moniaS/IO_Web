@@ -186,8 +186,9 @@
             initRecentlyAddedRoutes();
         });
 
+        <!--Initializes map-->
         function initMap() {
-            var waypoints = new Array();
+            var waypoints = [];
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 8,
                 center: new google.maps.LatLng(51.8550576, 19.000)
@@ -221,6 +222,7 @@
             });
         }
 
+        <!--Handler for click on map (showing modal to add new waypoint)-->
         function mapClickHandler(event) {
             var lat = event.latLng.lat();
             var lng = event.latLng.lng();
@@ -261,6 +263,7 @@
             });
         }
 
+        <!--Initializes markers on map(based on waypoints)-->
         function initMarkers(waypoints, map) {
             var infowindow = new google.maps.InfoWindow();
             var geocoder = new google.maps.Geocoder;
@@ -284,6 +287,7 @@
             })(marker, i));
         }
 
+        <!--Initializes route(based on trackpoints)-->
         function initRoute(trackpoints, map, routeId) {
             var route = new google.maps.Polyline({
                 path: trackpoints,
@@ -302,7 +306,7 @@
             });
         }
 
-        <!--Adds waypoint only with coordinate, description and authorId-->
+        <!--Adds waypoint with coordinate, description, authorId, address and images-->
         function addWaypoint(waypoint, authorId) {
             var rootRef = firebase.database().ref();
             var waypointsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints');
@@ -318,35 +322,10 @@
                 address: waypoint.address,
                 id: newWaypointId
              });
-            addImages(newWaypointId);
+            addImages(newWaypointId, $("#imagesInput")[0].files);
         }
 
-        function addImages(newWaypointId) {
-            var files = $("#imagesInput")[0].files;
-            var storage = firebase.storage();
-            var database = firebase.database().ref();
-            var waypointRef = database.child('Schemat/Content/Cities/Lodz/WayPoints/' + newWaypointId + "/photos");
-
-            for (var i = 0; i < files.length; i++) {
-                var newImage = waypointRef.push();
-                var uploadTask = storage.ref("WayPoints/" + newWaypointId  + "/" + files[i].name).put(files[i]);
-                uploadTask.on('state_changed', function(snapshot){
-                }, function(error) {
-                    // Handle unsuccessful uploads
-                }, function() {
-                    // Handle successful uploads on complete
-                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                    var downloadURL = uploadTask.snapshot.downloadURL;
-                    newImage.set({
-//                        imagePath: files[i].name,
-                        authorId: firebase.auth().currentUser.uid,
-                        downloadUrl: downloadURL
-                    })
-                });
-
-            }
-        }
-
+        <!--Initializes recently added routes-->
         function initRecentlyAddedRoutes() {
             var routesRef = database.ref('Schemat/Content/Cities/Lodz/Routes');
             routesRef.orderByChild("Route").on('value', function(snapshot) {
@@ -357,6 +336,7 @@
                         .attr("class", "card-panel grey lighten-5 z-depth-1 tooltipped");
                     var routeDiv = $('<div />')
                         .attr("class", "postedRoute")
+                        .attr("data-id", childData.id)
                     var authorDiv = $('<div />')
                         .attr("class", "routeAuthor")
                     var descDiv = $('<div />')
@@ -364,33 +344,28 @@
                     routeDiv.append(authorDiv);
                     routeDiv.append(descDiv);
                     routeCard.append(routeDiv);
-                    recentlyAddedRoutesDiv.append(routeCard);
                     findUsernameById(childData.authorId, function (username) {
                         if(username != undefined) {
                             authorDiv.html(username);
-                            descDiv.html(childData.name)
+                            descDiv.html(childData.name);
+                            recentlyAddedRoutesDiv.append(routeCard);
                         }
                     });
                 })
             });
         }
 
-        function findUsernameById(userId, callback) {
-            var usersRef = firebase.database().ref("Schemat/Content/Users");
-            var username;
-            usersRef.orderByChild('uid').equalTo(userId).on("value", function (snapshot) {
-                var data = snapshot.val();
-                if(data != null) {
-                    username = data[Object.keys(data)[0]].name;
-                    callback(username)
-                }
-            })
-        }
 
         $(".logout-btn").on("click", function() {
             firebase.auth().signOut().then(function() {
                 window.location = "login.html";
             }, function(error) {});
+        });
+
+        $(document).on('click', '.postedRoute', function(event) {
+            var nearestRoute = $(event.target).closest(".postedRoute");
+            localStorage.setItem("routeId", nearestRoute.data("id"));
+            window.location = "route.html";
         });
     </script>
     <!--Import jQuery before materialize.js-->
