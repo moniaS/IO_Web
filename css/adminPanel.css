@@ -1,0 +1,31 @@
+.ContentName
+{
+    font-size: 30px;
+    color:grey;
+    padding-top:50px;
+    padding-bottom: 20px;
+}
+.Stats
+{
+    background-color: #00acc1;
+    border-style: solid;
+    border: 10px;
+    border-color: white;
+    text-align: center;
+    color: white;
+    font-size: 25px;
+}
+.Stats:before
+{
+    content:'';
+    padding-top:100%;
+    float:left;
+}
+.StatsContent
+{
+    font-size: 80px;
+}
+.Spacer
+{
+    height:300px;
+}
