@@ -23,7 +23,7 @@
     <script src="js/custom.js"></script>
 </head>
 
-<body>
+<body  onload="hideAllLayouts();">
  <nav>
         <div class="nav-wrapper cyan darken-1">
             <img class="logoImg" src="images/logo.png">
@@ -45,7 +45,7 @@
                 <li class="bold"><a href="#" class="waves-effect waves-teal">Posts</a></li>
             </ul>
         </div>
-        <div class="col s8">
+        <div class="col s8 PageContent">
 <!--            DASHBOARD VIEW-->
             <div id="DashBoardLayout">
                 <div class="ContentName">DAILY STATISTICS</div>
@@ -72,7 +72,13 @@
             </div>
 <!--            COMMENTS VIEW-->
             <div id="CommentsLayout">
-                <div class="ContentName">tutaj mam pro komentarze</div>
+                <div class= "col s4">
+                    <div class="ContentName">WAY POINTS</div>
+                    <div class="wayPointName"></div>
+                </div>
+                  <div class= "col s7">
+                    <div class="ContentName">COMMENTS FOR TRACK POINTS</div>
+                </div>
             </div>
 <!--            USERS LIST VIEW-->
             <div id="UsersLayout">
@@ -84,8 +90,8 @@
     
 <!--    js for dashboard-->
     <script>
-         var database = firebase.database(); 
-         var usersRef = database.ref('Schemat/Content/Users');
+        var database = firebase.database(); 
+        var usersRef = database.ref('Schemat/Content/Users');
         function countUsers()
         {
             usersRef.on("value", function(snapshot)            
@@ -153,6 +159,19 @@
                 $("#dailyCommentsCount").html(dailyCommentsCount);
             })
         }
+        function dispalyAllWayPoints()
+        {
+            wayPointsRef.on("value",function(snapshot){
+                snapshot.forEach(function(childSnapshot){
+                    childSnapshot.child("comments").forEach(function(commentSnapshot){
+                    var childSnapshotData = childSnapshot.val(); 
+                       autoGenerateWayPointDiv(childSnapshotData.id,childSnapshotData.description);
+//                        appendComment(commentSnapshot.authorId, (new Date(commentSnapshot.timestamp)).toLocaleDateString(),commentSnapshot.message);
+                    })
+                })
+                 $("#displayComments").html(dailyCommentsCount);
+            })
+        }
         $(".DashboardLink").on("click",function() {
             hideAllLayouts();
             showDashboardLayout();
@@ -166,6 +185,7 @@
          $(".CommentsLink").on("click",function() {
             hideAllLayouts();
             showCommentsLayout();
+            dispalyAllWayPoints();
         });
         $(".UsersLink").on("click",function() {
             hideAllLayouts();
@@ -195,6 +215,10 @@
             usr.style.display = "none"
             var dboard = document.getElementById('DashBoardLayout');
             dboard.style.display = "none"
+        }
+        function autoGenerateWayPointDiv(wayPointId,description)
+        {
+             $(".wayPointName").prepend("<div class='waypointDetails'><div class='waypointName'>" + wayPointId + "</div><div class='waypointDesc'>Description: " + description + "</div></div>");
         }
         
     </script>      
