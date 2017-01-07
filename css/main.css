@@ -244,7 +244,7 @@ body {
   margin-bottom: 10px;
   text-align: center;
 }
-.waypointInfo .title .value{
+.waypointInfo .title .value, .userDetails .email{
     font-weight: normal !important;
     font-size: 20px !important;
     color: #00acc1;
@@ -363,4 +363,24 @@ hr {
     float: right;
     margin-top: -15px;
     margin-right: -10px;
+}
+.userDetails .email {
+    margin: 15px 0px;
+    font-size: 25px;
+}
+.userDetails .helpingText {
+    margin: 25px 10px;
+    font-size: 17px;
+}
+.userDetails #subscribeBtn {
+    background: #FF5733!important;
+}
+.userDetails .subscription a {
+    margin-left: 20px;
+}
+.userDetails .subscription a, .userDetails .subscription span{
+    display: none;
+}
+.numberOfLeftWaypoints {
+    display: none;
 }

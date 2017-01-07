@@ -25,7 +25,7 @@
 
 <body>
     <ul id="userDropdown" class="dropdown-content">
-        <li><a href="#!">My Profile</a></li>
+        <li><a href="profile.html">My Profile</a></li>
         <li><a href="#!">Settings</a></li>
         <li class="divider"></li>
         <li class="logout-btn"><a>Logout</a></li>
@@ -33,7 +33,7 @@
     <!--nav Bar-->
     <nav>
         <div class="nav-wrapper cyan darken-1">
-            <img class="logoImg" src="images/logo.png">
+            <a href="index.html" style="cursor: pointer"><img class="logoImg" src="images/logo.png"></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href=""><i class="material-icons">search</i></a></li>
                 <li><a href=""><i class="material-icons">view_module</i></a></li>
@@ -111,7 +111,7 @@
             <div class="slider">
                 <ul class="slides"></ul>
                 <input type="file" id="uploadFileInput" multiple style="display: none">
-                <button id="uploadFileBtn" style="float: right; top: -10px">ADD PHOTO</button>
+                <a id="uploadFileBtn" class="waves-effect waves-light btn" style="float: right;">add photo</a>
             </div>
             <div class="waypointContainer">
             <div class="waypointInfo">
@@ -133,7 +133,7 @@
             <div class="commentSection card-panel grey lighten-5 z-depth-1">
                 <div class="newComment">
                     <textarea rows="4" cols="50" placeholder="your comment"></textarea>
-                    <button class="addCommentBtn">ADD</button>
+                    <a class="waves-effect waves-light btn addCommentBtn">add</a>
                 </div>
                 <div class="comments">
                 </div>
