@@ -220,9 +220,6 @@ body {
 #passwordConfirmed {
   margin-bottom: 0px !important;
 }
-.waypointInfo {
-  display: none;
-}
 .waypointInfo i {
     position: relative;
     bottom: -10px;
@@ -361,4 +358,9 @@ hr {
 }
 .indicator-item.active {
     background: #00acc1!important;
+}
+.boxclose {
+    float: right;
+    margin-top: -15px;
+    margin-right: -10px;
 }

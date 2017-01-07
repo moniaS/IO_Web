@@ -107,6 +107,7 @@
     </footer>
     <div id="waypointInfoModal" class="modal">
         <div class="modal-content">
+            <a class="boxclose modal-close">&#10006;</a>
             <div class="slider">
                 <ul class="slides"></ul>
                 <input type="file" id="uploadFileInput" multiple style="display: none">
@@ -215,22 +216,7 @@
             }
         }
 
-        $(".logout-btn").on("click", function() {
-            firebase.auth().signOut().then(function() {
-                window.location = "login.html"
-            }, function(error) {});
-        });
-
-        $(".addCommentBtn").on("click", function() {
-            $(".comment").remove();
-            addComment(firebase.auth().currentUser.uid, $(".newComment textarea").val());
-            $(".newComment textarea").val("");
-        })
-
-        $(".closestWaypoints").delegate(".waypointDetails", "click", function(event) {
-              waypointClickHandler($(event.target).closest('.waypointName').html());
-         });
-
+        <!--Is invoked when user clicks on waypoint(on map or in closest waypoints section) and is used to show all waypoints-->
         function waypointClickHandler(waypointId) {
             $(".slides").find("li").remove();
             $(".indicators").remove();
@@ -248,7 +234,8 @@
                 $("#waypointInfoModal").modal({
                         ready: function (modal, trigger) {
                             modal.data("id", snapshotData.id)
-                        }
+                        },
+                        dismissible: false
                     }
                 );
                 $("#waypointInfoModal").modal('open');
@@ -261,8 +248,8 @@
                     $(".slider").show();
                 }
             })
-
         }
+
         <!--Adds new comment to waypoint-->
         function addComment(authorId, message) {
             var seconds = + new Date();
@@ -270,9 +257,6 @@
             var rootRef = firebase.database().ref();
             var waypointId = $("#waypointInfoModal").data("id");
             var commentsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId + '/comments/');
-            commentsRef.once("value", function (snapshot) {
-
-            })
             var newComment = commentsRef.push();
             newComment.set({
                 authorId: authorId,
@@ -289,21 +273,80 @@
             $(".comments").prepend("<div class='comment'><span class='commentAuthorId'>" + authorId + "</span><span class='commentDate'>" + date + "</span><span class='commentMessage'>" + message + "</span></div>")
         }
 
-        <!--Scrolls to waypoint info section-->
-        function scrollToWaypointInfo() {
-            $('html,body').animate({
-                scrollTop: $(".waypointInfo").offset().top},
-                'slow');
+        <!--Closes waypoint info modal-->
+        function closeWaypointInfoModal() {
+            $("#waypointInfoModal").modal('close');
+            $(document).off("keyup");
+            return false;
         }
+
+        <!--Shows all waypoints from the closest waypoints section-->
+        function showAllWaypoints() {
+            var elements = $(".closestWaypoints").find('.waypointDetails');
+            var index = 0;
+            waypointClickHandler(elements.eq(index).find(".waypointName").html());
+
+
+
+            var interval = setInterval(function () {
+                index++;
+                waypointClickHandler(elements.eq(index).find(".waypointName").html());
+                if(index == elements.length - 1) {
+                    $("#waypointInfoModal").modal('close');
+                    clearInterval(interval);
+                }
+            }, 20000);
+
+            $(document).on("keyup", function (event) {
+                if (event.keyCode == 39) {
+                    clearInterval(interval);
+                    index++;
+                    if(index == elements.length) {
+                        return closeWaypointInfoModal();
+                    }
+                    waypointClickHandler(elements.eq(index).find(".waypointName").html());
+
+                } else if(event.keyCode == 37) {
+                    clearInterval(index);
+                    index--;
+                    if(index == -1) {
+                        return closeWaypointInfoModal();
+                    }
+                    waypointClickHandler(elements.eq(index).find(".waypointName").html());
+                }
+            })
+
+        }
+
+        <!--CLICK EVENTS-->
+        $(".logout-btn").on("click", function() {
+            firebase.auth().signOut().then(function() {
+                window.location = "login.html"
+            }, function(error) {});
+        });
+
+        $(".addCommentBtn").on("click", function() {
+            $(".comment").remove();
+            addComment(firebase.auth().currentUser.uid, $(".newComment textarea").val());
+            $(".newComment textarea").val("");
+        });
+
+        $(".closestWaypoints").delegate(".waypointDetails", "click", function(event) {
+            waypointClickHandler($(event.target).closest('.waypointName').html());
+        });
 
         $("#uploadFileBtn").on("click", function () {
             $("#uploadFileInput").click();
-        })
+        });
 
         $("#uploadFileInput").on("change input", function () {
             addImages($("#waypointInfoModal").data("id"),$("#uploadFileInput")[0].files);
 
-        })
+        });
+
+        $("#naviButton").on("click", function () {
+            showAllWaypoints()
+        });
     </script>
     <!--Import jQuery before materialize.js-->
 
