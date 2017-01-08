@@ -105,9 +105,8 @@
                 <span class="waypointLatitude"></span><br>
                 <span>Longitude: </span>
                 <span class="waypointLongitude"></span><br>
-                <span>Address: </span>
-                <span class="waypointAddress"></span>
-                <input placeholder="Name" class="waypointName" />
+                <span class=""></span>
+                <input class="waypointAddress" />
                 <input class="waypointDesc" placeholder="Description"></input>
                 <form action="#">
                     <div class="file-field input-field">
@@ -198,29 +197,34 @@
                     if (status === 'OK') {
                         if (results[1]) {
                             address = results[1].formatted_address;
-                            $('.waypointAddress').html(address);
+                            $('.waypointAddress').val(address).focus();
                         }
                     }
                 });
 
                 $('#newWaypointModal').modal({
                     dismissible: false,
-                    ready: function() {
+                    complete: function() {
                         $(".waypointDesc").val("");
+                        $("#imagesInput").val("");
                     }
                 });
                 $('#newWaypointModal').modal('open');
                 $('.waypointLatitude').html(lat);
                 $('.waypointLongitude').html(lng);
-                $('.waypointAddress').html("");
 
                 $('.save-btn').off().on("click", function() {
                     var waypoint = {};
                     waypoint.description = $('.waypointDesc').val();
                     waypoint.latitude = lat;
                     waypoint.longitude = lng;
-                    waypoint.address = $('.waypointAddress').html();
+                    if(waypoint.description === "") {
+                        alert('You have to enter description!');
+                        return false;
+                    }
+                    waypoint.address = $('.waypointAddress').val();
                     addWaypoint(waypoint, firebase.auth().currentUser.uid);
+                    $('#newWaypointModal').modal('close');
                 })
             });
         }
