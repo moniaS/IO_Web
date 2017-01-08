@@ -29,3 +29,18 @@
 {
     height:300px;
 }
+.userScheme
+{
+    background-color: #00acc1;
+    font-size: 20px;
+    color: white;
+    height:250px;
+    margin-bottom: 30px;
+}
+.userData
+{
+    background-color: #CDCDCD;
+    height:250px;
+    font-size: 20px;
+    margin-bottom: 30px;
+}

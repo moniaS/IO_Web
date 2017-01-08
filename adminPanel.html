@@ -42,14 +42,15 @@
                 <li class="bold DashboardLink"><a href="#" class="waves-effect waves-teal">Dashboard</a></li>
                 <li class="bold CommentsLink"><a href="#" class="waves-effect waves-teal">Comments</a></li>
                 <li class="bold UsersLink"><a href="#" class="waves-effect waves-teal">Users</a></li>
-                <li class="bold"><a href="#" class="waves-effect waves-teal">Posts</a></li>
             </ul>
         </div>
         <div class="col s8 PageContent">
 <!--            DASHBOARD VIEW-->
             <div id="DashBoardLayout">
                 <div class="ContentName">DAILY STATISTICS</div>
-                <div class= "col s3  Stats">NEW USERS</div>
+                <div class= "col s3  Stats">NEW USERS
+                    <div id="dailyUsersCount"class="StatsContent"></div>
+                </div>
                 <div class= "col s3 offset-s1 Stats">NEW WAY POINTS
                     <div id="dailyPostsCount"class="StatsContent"></div>
                 </div>    
@@ -82,16 +83,16 @@
             </div>
 <!--            USERS LIST VIEW-->
             <div id="UsersLayout">
-                <div class="ContentName">tutaj mam pro userow</div>
-            </div>
-            
+                <div class="ContentName">USERS</div>
+                <div class="userGenerator"></div>
+            </div>    
         </div>
     </div>
     
 <!--    js for dashboard-->
     <script>
         var database = firebase.database(); 
-        var usersRef = database.ref('Schemat/Content/Users');
+        var usersRef = database.ref('Users');
         function countUsers()
         {
             usersRef.on("value", function(snapshot)            
@@ -103,7 +104,33 @@
                 $("#usersCount").html(userCout);
             })          
         }
-        var wayPointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+        function countNewUsers()
+        {
+            usersRef.on("value", function(snapshot)            
+            {
+                var newUserCout = 0;
+                var dailyCommentsCount = 0;
+                var currentDateTime = + new Date();
+                currentDateTime /= 1000;
+                currentDateTime = parseInt(currentDateTime);
+                
+                snapshot.forEach(function(childSnapshot){
+                    var user = childSnapshot.val();
+                    var userTimestamp = user.timestamp;
+                    var dbDate = userTimestamp.toLocaleString();
+
+                    var dbTimestamp = dbDate.replace(/\s/g, "");
+                    console.log(currentDateTime);
+                    console.log(dbTimestamp);
+                    if(currentDateTime - dbTimestamp < 86400 ) //less than one day
+                    {
+                        newUserCout++;  
+                    } 
+                })
+                $("#dailyUsersCount").html(newUserCout);
+            })          
+        }
+        var wayPointsRef = database.ref('Cities/Lodz/WayPoints');
         function countComments()
         {
             wayPointsRef.on("value",function(snapshot){
@@ -166,10 +193,18 @@
                     childSnapshot.child("comments").forEach(function(commentSnapshot){
                     var childSnapshotData = childSnapshot.val(); 
                        autoGenerateWayPointDiv(childSnapshotData.id,childSnapshotData.description);
-//                        appendComment(commentSnapshot.authorId, (new Date(commentSnapshot.timestamp)).toLocaleDateString(),commentSnapshot.message);
                     })
                 })
                  $("#displayComments").html(dailyCommentsCount);
+            })
+        }
+        function displayAllUsers()
+        {
+            usersRef.on("value",function(snapshot){
+                snapshot.forEach(function(usersnapshot){
+                    var user = usersnapshot.val();
+                    autoGenerateUserDiv(user.name, user.reole, user.email, user.isBlocked);
+                })
             })
         }
         $(".DashboardLink").on("click",function() {
@@ -179,7 +214,8 @@
             countDailyPosts();
             countUsers();
             countComments();
-            countPosts();
+            countPosts();            
+            countNewUsers();
             
         });
          $(".CommentsLink").on("click",function() {
@@ -190,6 +226,7 @@
         $(".UsersLink").on("click",function() {
             hideAllLayouts();
             showUsersLayout();
+            displayAllUsers();
         });
         
         function showDashboardLayout()
@@ -220,10 +257,13 @@
         {
              $(".wayPointName").prepend("<div class='waypointDetails'><div class='waypointName'>" + wayPointId + "</div><div class='waypointDesc'>Description: " + description + "</div></div>");
         }
+        function autoGenerateUserDiv(name, reole, email, isBlocked)
+        {
+             $(".userGenerator").append(" <div class='col s6 userstyle'><div class='userScheme col s3'><p>Name:</p><p>Email:</p><p>Role:</p><p>isBlocked:</p></div><div class='userData col s9'><p>"+ name+"</p><p>"+reole +"</p><p>"+email +"</p><p>"+ isBlocked+"</p></div></div>");
+        }
         
     </script>      
     
     <script type="text/javascript" src="js/materialize.min.js"></script>
-<!--    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyaOvUpwamVCDPcXn2eLH_JTi8bVrQ9Is&callback=initMap"></script>-->
 </body>
 </html>
