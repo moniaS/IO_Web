@@ -33,7 +33,6 @@
     <!--nav Bar-->
     <nav>
         <div class="nav-wrapper cyan darken-1">
-            <a href="index.html" style="cursor: pointer"><img class="logoImg" src="images/logo.png"></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href=""><i class="material-icons">search</i></a></li>
                 <li><a href=""><i class="material-icons">view_module</i></a></li>
@@ -111,23 +110,23 @@
             <div class="slider">
                 <ul class="slides"></ul>
                 <input type="file" id="uploadFileInput" multiple style="display: none">
-                <a id="uploadFileBtn" class="waves-effect waves-light btn" style="float: right;">add photo</a>
+                <a id="uploadFileBtn" class="waves-effect waves-light btn" style="float: left;">add photo</a>
             </div>
             <div class="waypointContainer">
             <div class="waypointInfo">
                 <div class="card-panel grey lighten-5 z-depth-1">
                     <div class="title">
+                        <i class="small material-icons" data-position="bottom" data-delay="50" style="color: #00acc1!important;">location_on</i>
                         <span class="value" />
                     </div>
                     <hr class="line">
                     <div class="description">
-                        <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">description</i>
-                        <span>Description: </span><span class="value" />
+                        <span class="value" />
                     </div>
-                    <div class="address">
-                        <i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>
-                        <span>Address: </span><span class="value" />
-                    </div>
+                    <!--<div class="address">-->
+                        <!--<i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>-->
+                        <!--<span>Address: </span><span class="value" />-->
+                    <!--</div>-->
                 </div>
             </div>
             <div class="commentSection card-panel grey lighten-5 z-depth-1">
@@ -146,7 +145,7 @@
     </div>
     <script>
         var database = firebase.database();
-        var routeRef = database.ref('Schemat/Content/Cities/Lodz/Routes/' + localStorage.getItem("routeId"));
+        var routeRef = database.ref('Cities/Lodz/Routes/' + localStorage.getItem("routeId"));
 
         <!--Initializes map-->
         function initMap() {
@@ -178,12 +177,12 @@
                 clickable: true,
             });
             route.setMap(map);
-            initClosestWaypoints(trackpoints, map, 10);
+            initClosestWaypoints(trackpoints, map, 1);
         }
 
         <!--Initializes the closest waypoints to route-->
         function initClosestWaypoints(trackpoints, map, maxDistance) {
-            var wayPointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+            var wayPointsRef = database.ref('Cities/Lodz/WayPoints');
             var addedWaypoints = [];
             for (var i = 0; i < trackpoints.length; i++) {
                 var trackPoint = new google.maps.LatLng(trackpoints[i].lat, trackpoints[i].lng);
@@ -200,47 +199,96 @@
                                 map: map
                             });
 
+                            findUsernameById(childData.authorId, function (username) {
+                                if(username != undefined) {
+                                    $(".closestWaypoints").append("<div class='waypointDetails' data-id=" + childData.id + "><div class='waypointName'>" + childData.address + "</div><div class='waypointDesc'><div class='waypointDesc'>Author: " + username + "</div>Description: " + childData.description + "</div></div>");
+                                }
+                            });
+
                             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                                 return function () {
                                     waypointClickHandler(childData.id);
                                 }
                             })(marker, i));
-                            findUsernameById(childData.authorId, function (username) {
-                                if(username != undefined) {
-                                    $(".closestWaypoints").append("<div class='waypointDetails'><div class='waypointName'>" + childData.id + "</div><div class='waypointDesc'><div class='waypointDesc'>Author: " + username + "</div>Description: " + childData.description + "</div></div>");
-                                }
-                            });
+
                         }
                     })
                 })
             }
         }
+//
+//        FireBaseRef.once('value', function(snapshot) {
+//            var prev_name= snapshot.val(); // Sonta
+//            FireBaseRef.set({
+//                "value": new_name,
+//                "prev_value": prev_name
+//            })
+//        });
+
+        function findUser(callback) {
+            var usersRef = firebase.database().ref("Users");
+            var username;
+            usersRef.orderByChild('email').equalTo($(".username").html()).once("value", function (snapshot) {
+                var data = snapshot.val();
+                if(data != null) {
+                    user = data[Object.keys(data)[0]];
+                    callback(user)
+                }
+            })
+        }
+
+
 
         <!--Is invoked when user clicks on waypoint(on map or in closest waypoints section) and is used to show all waypoints-->
         function waypointClickHandler(waypointId) {
+            findUser(function (user) {
+                var counter = user.waypointsCounter;
+                if(user.role == "nonSubscriber" && counter > 0) {
+                    var databaseRef = database.ref('Users').child(user.key);
+
+                    databaseRef.once('value', function(snapshot) {
+                        if( snapshot.val() != null ) {
+                            var oldCounter = Number(snapshot.val().waypointsCounter);
+                            $(".waypointDetails").remove();
+                            snapshot.ref.update({"waypointsCounter": oldCounter - 1});
+                            showWaypointInfoModal(waypointId);
+                        }
+                    });
+                } else if(user.role == "nonSubscriber") {
+                    alert("You have no left waypoints to see. Subscription needed!");
+                }
+            });
+        }
+
+        function showWaypointInfoModal(waypointId) {
             $(".slides").find("li").remove();
             $(".indicators").remove();
             $(".slider").slider();
             $(".slider").slider('pause');
-            var chosenWaypoint = database.ref('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId);
+            var chosenWaypoint = database.ref('Cities/Lodz/WayPoints/' + waypointId);
             chosenWaypoint.on('value', function(snapshot) {
                 $(".comment").remove();
                 var snapshotData = snapshot.val();
                 snapshot.child("comments").forEach(function(childSnapshot) {
                     var childSnapshotData = childSnapshot.val();
-                    appendComment(childSnapshotData.authorId,
-                        (new Date(childSnapshotData.timestamp)).toLocaleString(),childSnapshotData.message);
+                    findUsernameById(childSnapshotData.authorId, function (username) {
+                        appendComment(username,
+                            (new Date(childSnapshotData.timestamp)).toLocaleString(),childSnapshotData.message);
+                    })
+
                 })
                 $("#waypointInfoModal").modal({
                         ready: function (modal, trigger) {
-                            modal.data("id", snapshotData.id)
+                            modal.data("id", snapshotData.id);
+                            $($(".waypointsDetails").remove());
+
                         },
                         dismissible: false
                     }
                 );
                 $("#waypointInfoModal").modal('open');
-                $(".waypointInfo .title .value").html(snapshotData.description);
-                $(".waypointInfo .address .value").html(snapshotData.address);
+                $(".waypointInfo .title .value").html(snapshotData.address);
+                $(".waypointInfo .description .value").html(snapshotData.description);
                 getImagesFromStorage(snapshotData.id);
                 if($(".slides").find("li").length == 0) {
                     $(".slider").hide();
@@ -250,13 +298,16 @@
             })
         }
 
+
+
+
         <!--Adds new comment to waypoint-->
         function addComment(authorId, message) {
             var seconds = + new Date();
             $(".comment").remove();
             var rootRef = firebase.database().ref();
             var waypointId = $("#waypointInfoModal").data("id");
-            var commentsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId + '/comments/');
+            var commentsRef = rootRef.child('Cities/Lodz/WayPoints/' + waypointId + '/comments/');
             var newComment = commentsRef.push();
             newComment.set({
                 authorId: authorId,
@@ -284,13 +335,10 @@
         function showAllWaypoints() {
             var elements = $(".closestWaypoints").find('.waypointDetails');
             var index = 0;
-            waypointClickHandler(elements.eq(index).find(".waypointName").html());
-
-
-
+            waypointClickHandler(elements.eq(index).data("id"));
             var interval = setInterval(function () {
                 index++;
-                waypointClickHandler(elements.eq(index).find(".waypointName").html());
+                waypointClickHandler(elements.eq(index).data("id"));
                 if(index == elements.length - 1) {
                     $("#waypointInfoModal").modal('close');
                     clearInterval(interval);
@@ -304,7 +352,7 @@
                     if(index == elements.length) {
                         return closeWaypointInfoModal();
                     }
-                    waypointClickHandler(elements.eq(index).find(".waypointName").html());
+                    waypointClickHandler(elements.eq(index).data("id"));
 
                 } else if(event.keyCode == 37) {
                     clearInterval(index);
@@ -312,7 +360,7 @@
                     if(index == -1) {
                         return closeWaypointInfoModal();
                     }
-                    waypointClickHandler(elements.eq(index).find(".waypointName").html());
+                    waypointClickHandler(elements.eq(index).data("id"));
                 }
             })
 
@@ -325,14 +373,14 @@
             }, function(error) {});
         });
 
-        $(".addCommentBtn").on("click", function() {
+        $(".addCommentBtn").off().on("click", function() {
             $(".comment").remove();
             addComment(firebase.auth().currentUser.uid, $(".newComment textarea").val());
             $(".newComment textarea").val("");
         });
 
         $(".closestWaypoints").delegate(".waypointDetails", "click", function(event) {
-            waypointClickHandler($(event.target).closest('.waypointName').html());
+            waypointClickHandler($(event.target).closest('.waypointDetails').data("id"));
         });
 
         $("#uploadFileBtn").on("click", function () {
@@ -341,7 +389,6 @@
 
         $("#uploadFileInput").on("change input", function () {
             addImages($("#waypointInfoModal").data("id"),$("#uploadFileInput")[0].files);
-
         });
 
         $("#naviButton").on("click", function () {

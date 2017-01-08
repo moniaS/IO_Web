@@ -50,20 +50,21 @@
                 <hr>
                 <div class="dateOfCreatingAccount">
                     <div class="helpingText">Date of creating account: </div>
+                    <div class="value" style="display: inline"></div>
                 </div>
                 <div class="userName">
-                    <div class="helpingText" style="display: inline">Username:</div>
-                    <div class="value" style="display: inline"/>
+                    <div class="helpingText">Username:</div>
+                    <div class="value" style="display: inline"></div>
                 </div>
                 <div class="subscription">
                     <div class="helpingText">Subscription:
-                        <a id="subscribeBtn" class="waves-effect waves-light btn">Subscribe</a>
+                        <a id="subscribeBtn" class="waves-effect waves-light btn" style="display: inline">Subscribe</a>
                         <span>Subscription to </span>
                     </div>
-
                 </div>
                 <div class="numberOfLeftWaypoints">
                     <div class="helpingText">Number of left waypoints: </div>
+                    <div style="display: inline" class="value"></div>
                 </div>
             </div>
         </div>
@@ -100,17 +101,21 @@
     firebase.auth().onAuthStateChanged(function(currentUser) {
         if (currentUser) {
             $(".username").html(currentUser.email);
-            $(".username").data("id", currentUser.uid);
+            $(".username").attr("data-id", currentUser.uid);
             $(".userDetails .email").html(currentUser.email);
+
             var database = firebase.database();
-            var usersRef = database.ref('Schemat/Content/Users');
-            usersRef.orderByChild("uid").equalTo($(".username").data("id")).on("value", function (snapshot) {
+            var usersRef = database.ref('Users');
+            usersRef.orderByChild("uid").equalTo($(".username").attr("data-id")).on("value", function (snapshot) {
                 var data = snapshot.val();
                 if(data != null) {
-                    $(".userName .value").html(data[Object.keys(data)[0]].name);
+                    var tempTimpstamp = data[Object.keys(data)[0]].timestamp / 1000;
+                    $(".dateOfCreatingAccount").find(".value").html((new Date(tempTimpstamp)).toLocaleString());
+                    $(".userName").find(".value").html(data[Object.keys(data)[0]].name);
                     if(data[Object.keys(data)[0]].role == "nonSubscriber") {
                         $(".userDetails .subscription a").show();
                         $(".userDetails .numberOfLeftWaypoints").show();
+                        $(".numberOfLeftWaypoints").find(".value").html(data[Object.keys(data)[0]].waypointsCounter);
                     } else {
                         $(".userDetails .subscription a").hide();
                         $(".userDetails .numberOfLeftWaypoints").hide();
@@ -123,7 +128,7 @@
 
     $("#subscribeBtn").on("click", function () {
         var database = firebase.database();
-        var usersRef = database.ref('Schemat/Content/Users');
+        var usersRef = database.ref('Users');
         usersRef.orderByChild("uid").equalTo($(".username").data("id")).on("value", function (snapshot) {
             var data = snapshot.val();
             if(data != null) {

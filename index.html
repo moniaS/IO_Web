@@ -116,6 +116,7 @@
     </footer>
     <div id="newWaypointModal" class="modal">
         <div class="modal-content">
+            <a class="boxclose modal-close">&#10006;</a>
             <h4><i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>Waypoint</h4>
             <div class="coordinateOnModal">
                 <span>Latitude: </span>
@@ -154,8 +155,8 @@
         });
 
         var database = firebase.database();
-        var routesRef = database.ref('Schemat/Content/Cities/Lodz/Routes');
-        var waypointsRef = database.ref('Schemat/Content/Cities/Lodz/WayPoints');
+        var routesRef = database.ref('Cities/Lodz/Routes');
+        var waypointsRef = database.ref('Cities/Lodz/WayPoints');
 
         $( document ).ready(function() {
             initRecentlyAddedRoutes();
@@ -220,20 +221,24 @@
                     }
                 });
 
-                $('#newWaypointModal').modal();
+                $('#newWaypointModal').modal({
+                    dismissible: false,
+                    ready: function() {
+                        $(".waypointDesc").val("");
+                    }
+                });
                 $('#newWaypointModal').modal('open');
                 $('.waypointLatitude').html(lat);
                 $('.waypointLongitude').html(lng);
                 $('.waypointAddress').html("");
 
-                $('.save-btn').on("click", function() {
+                $('.save-btn').off().on("click", function() {
                     var waypoint = {};
                     waypoint.description = $('.waypointDesc').val();
                     waypoint.latitude = lat;
                     waypoint.longitude = lng;
                     waypoint.address = $('.waypointAddress').html();
                     addWaypoint(waypoint, firebase.auth().currentUser.uid);
-
                 })
             });
         }
@@ -283,8 +288,9 @@
 
         <!--Adds waypoint with coordinate, description, authorId, address and images-->
         function addWaypoint(waypoint, authorId) {
+            var timestampTemp = + new Date();
             var rootRef = firebase.database().ref();
-            var waypointsRef = rootRef.child('Schemat/Content/Cities/Lodz/WayPoints');
+            var waypointsRef = rootRef.child('Cities/Lodz/WayPoints');
             var newWaypoint = waypointsRef.push();
             var newWaypointId = newWaypoint.key;
             newWaypoint.set({
@@ -295,15 +301,16 @@
                 description: waypoint.description,
                 authorId: authorId,
                 address: waypoint.address,
-                id: newWaypointId
+                id: newWaypointId,
+                timestamp: timestampTemp
              });
             addImages(newWaypointId, $("#imagesInput")[0].files);
         }
 
         <!--Initializes recently added routes-->
         function initRecentlyAddedRoutes() {
-            var routesRef = database.ref('Schemat/Content/Cities/Lodz/Routes');
-            routesRef.orderByChild("Route").on('value', function(snapshot) {
+            var routesRef = database.ref('Cities/Lodz/Routes');
+            routesRef.on('value', function(snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     var childData = childSnapshot.val();
                     var recentlyAddedRoutesDiv = $("#recentlyAddedRoutes");
@@ -311,11 +318,11 @@
                         .attr("class", "card-panel grey lighten-5 z-depth-1 tooltipped");
                     var routeDiv = $('<div />')
                         .attr("class", "postedRoute")
-                        .attr("data-id", childData.id)
+                        .attr("data-id", childData.id);
                     var authorDiv = $('<div />')
-                        .attr("class", "routeAuthor")
+                        .attr("class", "routeAuthor");
                     var descDiv = $('<div />')
-                        .attr("class", "routeDescription")
+                        .attr("class", "routeDescription");
                     routeDiv.append(authorDiv);
                     routeDiv.append(descDiv);
                     routeCard.append(routeDiv);

@@ -229,15 +229,11 @@ body {
     box-shadow: 2px 2px 10px #333;
     margin: 10px;
     border-radius: 3px;
+    cursor: pointer;
 }
 .waypointDetails div:not(:first-child) {
   padding: 0 10px;
 }
-/*.waypointInfo .title, .value {*/
-  /*padding: 15px 0;*/
-  /*margin-bottom: 10px;*/
-  /*text-align: center;*/
-/*}*/
 .waypointDetails .waypointName {
   background-color: #00acc1;
   padding: 5px 0;
@@ -356,6 +352,7 @@ hr {
     float: left!important;
     margin-top: 40px;
 }
+
 .indicator-item.active {
     background: #00acc1!important;
 }
@@ -369,11 +366,12 @@ hr {
     font-size: 25px;
 }
 .userDetails .helpingText {
-    margin: 25px 10px;
     font-size: 17px;
+    display: inline;
 }
 .userDetails #subscribeBtn {
     background: #FF5733!important;
+    padding: 7px 8px;
 }
 .userDetails .subscription a {
     margin-left: 20px;
@@ -383,4 +381,13 @@ hr {
 }
 .numberOfLeftWaypoints {
     display: none;
+}
+.waypointInfo .description {
+    margin-top: 15px;
+}
+#waypointInfoModal .btn {
+    background: #00acc1!important;
+}
+.userDetails > *:not(:first-child) {
+    margin: 25px 5px;
 }

@@ -84,8 +84,9 @@
     });
 
     function addUser(uid, username, email, role){
+        var timestampTemp = + new Date();
         var rootRef = firebase.database().ref();
-        var usersRef = rootRef.child('Schemat/Content/Users');
+        var usersRef = rootRef.child('Users');
         var newUser = usersRef.push();
         var newUserId = newUser.key;
         newUser.set({
@@ -93,7 +94,10 @@
           name: username,
           email: email,
           role: role,
-          id: newUserId
+          key: newUserId,
+          timestamp: timestampTemp,
+          waypointsCounter: 5,
+          isBlocked: false
         });
       }
   </script>

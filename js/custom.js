@@ -17,7 +17,7 @@ firebase.auth().onAuthStateChanged(function(currentUser) {
 function addImages(newWaypointId, files) {
     var storage = firebase.storage();
     var database = firebase.database().ref();
-    var waypointRef = database.child('Schemat/Content/Cities/Lodz/WayPoints/' + newWaypointId + "/photos");
+    var waypointRef = database.child('Cities/Lodz/WayPoints/' + newWaypointId + "/photos");
 
     for (var i = 0; i < files.length; i++) {
         var newImage = waypointRef.push();
@@ -46,7 +46,7 @@ function addImages(newWaypointId, files) {
 
 <!--Gets images of waypoint from firebase storage-->
 function getImagesFromStorage(waypointId) {
-    var chosenWaypoint = database.ref('Schemat/Content/Cities/Lodz/WayPoints/' + waypointId);
+    var chosenWaypoint = database.ref('Cities/Lodz/WayPoints/' + waypointId);
     chosenWaypoint.on('value', function(snapshot) {
         snapshot.child("photos").forEach(function(childSnapshot) {
             var childData = childSnapshot.val();
@@ -67,7 +67,7 @@ function getImagesFromStorage(waypointId) {
 }
 
 function findUsernameById(userId, callback) {
-    var usersRef = firebase.database().ref("Schemat/Content/Users");
+    var usersRef = firebase.database().ref("Users");
     var username;
     usersRef.orderByChild('uid').equalTo(userId).on("value", function (snapshot) {
         var data = snapshot.val();
