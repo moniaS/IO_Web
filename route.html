@@ -237,6 +237,8 @@
                     });
                 } else if(user.role == "nonSubscriber") {
                     alert("You have no left waypoints to see. Subscription needed!");
+                } else {
+                    showWaypointInfoModal(waypointId);
                 }
             });
         }
@@ -262,12 +264,19 @@
                         ready: function (modal, trigger) {
                             modal.data("id", snapshotData.id);
                             $($(".waypointsDetails").remove());
+                            $("#uploadFileBtn").off().on("click", function () {
+                                $("#uploadFileInput").click();
+                            });
 
+                            $("#uploadFileInput").off().on("change input", function () {
+                                addImages($("#waypointInfoModal").data("id"),$("#uploadFileInput")[0].files);
+                            });
                         },
                         dismissible: false
                     }
                 );
                 $("#waypointInfoModal").modal('open');
+
                 $(".waypointInfo .title .value").html(snapshotData.address);
                 $(".waypointInfo .description .value").html(snapshotData.description);
                 getImagesFromStorage(snapshotData.id);
@@ -362,14 +371,6 @@
 
         $(".closestWaypoints").delegate(".waypointDetails", "click", function(event) {
             waypointClickHandler($(event.target).closest('.waypointDetails').data("id"));
-        });
-
-        $("#uploadFileBtn").on("click", function () {
-            $("#uploadFileInput").click();
-        });
-
-        $("#uploadFileInput").on("change input", function () {
-            addImages($("#waypointInfoModal").data("id"),$("#uploadFileInput")[0].files);
         });
 
         $("#naviButton").on("click", function () {

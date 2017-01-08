@@ -307,7 +307,7 @@ body {
     padding: 10px!important;
 }
 .comments {
-    height: 60%;
+    max-height: 150px;
     overflow: auto;
 }
 hr {
@@ -330,7 +330,8 @@ hr {
 
 #waypointInfoModal {
     width: 90% !important;
-    max-height: 90% !important;
+    height: 90%;
+    max-height: 85% !important;
     overflow: hidden;
 }
 
@@ -347,7 +348,7 @@ hr {
 }
 
 #waypointInfoModal .commentSection {
-    height: 330px;
+    max-height: 300px;
 }
 
 .slider {
