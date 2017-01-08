@@ -58,8 +58,8 @@
                 </div>
                 <div class="subscription">
                     <div class="helpingText">Subscription:
-                        <a id="subscribeBtn" class="waves-effect waves-light btn" style="display: inline">Subscribe</a>
-                        <span>Subscription to </span>
+                        <a id="subscribeBtn" class="waves-effect waves-light btn">Subscribe</a>
+                        <span>Subscribed</span>
                     </div>
                 </div>
                 <div class="numberOfLeftWaypoints">
@@ -80,7 +80,7 @@
             </div>
             <div class="col l4 offset-l2 s12">
                 <h5 class="white-text">Links</h5>
-                <ul>
+                <ul class="footerLinks">
                     <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
                     <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
                     <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
@@ -109,7 +109,7 @@
             usersRef.orderByChild("uid").equalTo($(".username").attr("data-id")).on("value", function (snapshot) {
                 var data = snapshot.val();
                 if(data != null) {
-                    var tempTimpstamp = data[Object.keys(data)[0]].timestamp / 1000;
+                    var tempTimpstamp = data[Object.keys(data)[0]].timestamp * 1000;
                     $(".dateOfCreatingAccount").find(".value").html((new Date(tempTimpstamp)).toLocaleString());
                     $(".userName").find(".value").html(data[Object.keys(data)[0]].name);
                     if(data[Object.keys(data)[0]].role == "nonSubscriber") {
@@ -132,7 +132,7 @@
         usersRef.orderByChild("uid").equalTo($(".username").data("id")).on("value", function (snapshot) {
             var data = snapshot.val();
             if(data != null) {
-                 var userRef = usersRef.child(data[Object.keys(data)[0]].id);
+                 var userRef = usersRef.child(data[Object.keys(data)[0]].key);
                  userRef.update({
                      role: "subscriber"
                  }).then(function () {

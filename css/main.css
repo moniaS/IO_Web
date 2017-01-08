@@ -1,6 +1,8 @@
 /*post HTML*/
 #map
 {
+    margin-top: 80px;
+    margin-bottom: 80px;
     height: 450px;
     width: 100%;
 }
@@ -25,8 +27,9 @@ div.scroll
 .siteHeader
 {
     /*color: #4dd0e1;*/
-    font-size: 30px;
+    font-size: 20px;
     padding-top: 20px;
+    margin-bottom: 50px;
 }
 body
 {
@@ -379,6 +382,9 @@ hr {
 .userDetails .subscription a, .userDetails .subscription span{
     display: none;
 }
+.userDetails .subscription span {
+    color: #FF5733;
+}
 .numberOfLeftWaypoints {
     display: none;
 }
@@ -390,4 +396,27 @@ hr {
 }
 .userDetails > *:not(:first-child) {
     margin: 25px 5px;
+}
+.footerLinks > li{
+    display: inline;
+}
+.userDetails .value {
+    font-size: 18px;
+    font-weight: bold;
+}
+#recentlyAddedRoutes {
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+.postedRoute .routeDate {
+    font-size: 15px;
+}
+.closestWaypoints {
+    margin-top: 80px;
+}
+#naviButton {
+    position: absolute;
+    top: 540px;
+    left: 700px;
+    z-index: 5;
 }
