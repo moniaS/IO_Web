@@ -78,7 +78,7 @@
                     <div class="wayPointName"></div>
                 </div>
                   <div class= "col s7">
-                    <div class="ContentName">COMMENTS FOR TRACK POINTS</div>
+                    <div class="ContentName">COMMENTS FOR WAY POINTS</div>
                 </div>
             </div>
 <!--            USERS LIST VIEW-->
@@ -192,7 +192,7 @@
                 snapshot.forEach(function(childSnapshot){
                     childSnapshot.child("comments").forEach(function(commentSnapshot){
                     var childSnapshotData = childSnapshot.val(); 
-                       autoGenerateWayPointDiv(childSnapshotData.id,childSnapshotData.description);
+                       autoGenerateWayPointDiv(childSnapshotData.address,childSnapshotData.description);
                     })
                 })
                  $("#displayComments").html(dailyCommentsCount);
@@ -203,7 +203,7 @@
             usersRef.on("value",function(snapshot){
                 snapshot.forEach(function(usersnapshot){
                     var user = usersnapshot.val();
-                    autoGenerateUserDiv(user.name, user.reole, user.email, user.isBlocked);
+                    autoGenerateUserDiv(user.name, user.role, user.email, user.isBlocked);
                 })
             })
         }
@@ -253,13 +253,13 @@
             var dboard = document.getElementById('DashBoardLayout');
             dboard.style.display = "none"
         }
-        function autoGenerateWayPointDiv(wayPointId,description)
+        function autoGenerateWayPointDiv(address,description)
         {
-             $(".wayPointName").prepend("<div class='waypointDetails'><div class='waypointName'>" + wayPointId + "</div><div class='waypointDesc'>Description: " + description + "</div></div>");
+             $(".wayPointName").prepend("<div class='waypointDetails'><div class='waypointName'>" + address + "</div><div class='waypointDesc'>Description: " + description + "</div></div>");
         }
-        function autoGenerateUserDiv(name, reole, email, isBlocked)
+        function autoGenerateUserDiv(name, role, email, isBlocked)
         {
-             $(".userGenerator").append(" <div class='col s6 userstyle'><div class='userScheme col s3'><p>Name:</p><p>Email:</p><p>Role:</p><p>isBlocked:</p></div><div class='userData col s9'><p>"+ name+"</p><p>"+reole +"</p><p>"+email +"</p><p>"+ isBlocked+"</p></div></div>");
+             $(".userGenerator").append(" <div class='col s6 userstyle'><div class='userScheme col s3'><p>Name:</p><p>Email:</p><p>Role:</p><p>isBlocked:</p></div><div class='userData col s9'><p>"+ name+"</p><p>"+ email +"</p><p>"+role +"</p><p>"+ isBlocked+" <a class='waves-effect waves-light btn'>block</a></p></div></div>");
         }
         
     </script>      
