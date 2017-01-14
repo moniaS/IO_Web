@@ -78,4 +78,113 @@ function findUsernameById(userId, callback) {
     })
 }
 
+<!--Is invoked when user clicks on waypoint(on map or in closest waypoints section) and is used to show all waypoints-->
+function waypointClickHandler(waypointId) {
+    findUser(function (user) {
+        var counter = user.waypointsCounter;
+        if(user.role == "nonSubscriber" && counter > 0) {
+            var databaseRef = database.ref('Users').child(user.key);
+
+            databaseRef.once('value', function(snapshot) {
+                if( snapshot.val() != null ) {
+                    var oldCounter = Number(snapshot.val().waypointsCounter);
+                    $(".waypointDetails").remove();
+                    snapshot.ref.update({"waypointsCounter": oldCounter - 1});
+                    showWaypointInfoModal(waypointId);
+                }
+            });
+        } else if(user.role == "nonSubscriber") {
+            alert("You have no left waypoints to see. Subscription needed!");
+        } else {
+            showWaypointInfoModal(waypointId);
+        }
+    });
+}
+
+function showWaypointInfoModal(waypointId) {
+    $(".slides").find("li").remove();
+    $(".indicators").remove();
+    $(".slider").slider();
+    $(".slider").slider('pause');
+    var chosenWaypoint = database.ref('Cities/Lodz/WayPoints/' + waypointId);
+    chosenWaypoint.on('value', function(snapshot) {
+        $(".comment").remove();
+        var snapshotData = snapshot.val();
+        snapshot.child("comments").forEach(function(childSnapshot) {
+            var childSnapshotData = childSnapshot.val();
+            findUsernameById(childSnapshotData.authorId, function (username) {
+                appendComment(username,
+                    (new Date(childSnapshotData.timestamp)).toLocaleString(),childSnapshotData.message);
+            })
+
+        })
+        $("#waypointInfoModal").modal({
+                ready: function (modal, trigger) {
+                    modal.data("id", snapshotData.id);
+                    $($(".waypointsDetails").remove());
+                    $("#uploadFileBtn").off().on("click", function () {
+                        $("#uploadFileInput").click();
+                    });
+
+                    $("#uploadFileInput").off().on("change input", function () {
+                        addImages($("#waypointInfoModal").data("id"),$("#uploadFileInput")[0].files);
+                    });
+                },
+                dismissible: false
+            }
+        );
+        $("#waypointInfoModal").modal('open');
+
+        $(".waypointInfo .title .value").html(snapshotData.address);
+        $(".waypointInfo .description .value").html(snapshotData.description);
+        getImagesFromStorage(snapshotData.id);
+        if($(".slides").find("li").length == 0) {
+            $(".slider").hide();
+        } else {
+            $(".slider").show();
+        }
+    })
+}
+
+<!--Adds new comment to waypoint-->
+function addComment(authorId, message) {
+    var seconds = + new Date();
+    $(".comment").remove();
+    var rootRef = firebase.database().ref();
+    var waypointId = $("#waypointInfoModal").data("id");
+    var commentsRef = rootRef.child('Cities/Lodz/WayPoints/' + waypointId + '/comments/');
+    var newComment = commentsRef.push();
+    newComment.set({
+        authorId: authorId,
+        message: message,
+        timestamp: seconds
+    });
+    $(".slides").find("li").remove();
+    $(".indicators").remove();
+    getImagesFromStorage(waypointId);
+}
+
+<!--Append comment in comments section-->
+function appendComment(authorId, date, message) {
+    $(".comments").prepend("<div class='comment'><span class='commentAuthorId'>" + authorId + "</span><span class='commentDate'>" + date + "</span><span class='commentMessage'>" + message + "</span></div>")
+}
+
+<!--Closes waypoint info modal-->
+function closeWaypointInfoModal() {
+    $("#waypointInfoModal").modal('close');
+    $(document).off("keyup");
+    return false;
+}
+
+function findUser(callback) {
+    var usersRef = firebase.database().ref("Users");
+    var username;
+    usersRef.orderByChild('email').equalTo($(".username").html()).once("value", function (snapshot) {
+        var data = snapshot.val();
+        if(data != null) {
+            user = data[Object.keys(data)[0]];
+            callback(user)
+        }
+    })
+}
 

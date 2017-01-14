@@ -44,3 +44,15 @@
     font-size: 20px;
     margin-bottom: 30px;
 }
+#CommentsLayout {
+    overflow: auto;
+    max-height: 80%;
+}
+.active {
+    box-shadow: 5px 5px 10px #333;
+    -webkit-box-shadow: 0 0 10px 5px #333;
+    -moz-box-shadow: 0 0 10px 5px #333;
+}
+.card-panel:hover {
+    background-color: #00acc1;
+}

@@ -75,24 +75,22 @@
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
-                    <h5 class="white-text">Footer Content</h5>
-                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                    <h5 class="white-text">Contact</h5>
+                    <p class="grey-text text-lighten-4">Email: 123@gmail.com</p>
+                    <p class="grey-text text-lighten-4">Phone: 123-456-789</p>
                 </div>
                 <div class="col l4 offset-l2 s12">
-                    <h5 class="white-text">Links</h5>
+                    <h5 class="white-text">Information</h5>
                     <ul class="footerLinks">
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Privacy Policy |</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Payment Policy</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-copyright">
             <div class="container">
-                © 2014 Copyright Text
-                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                © 2014 Virtual Driving School. All rights reserved.
             </div>
         </div>
     </footer>
@@ -125,6 +123,45 @@
         <div class="modal-footer">
             <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
             <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat save-btn">Save</a>
+        </div>
+    </div>
+    <div id="waypointInfoModal" class="modal">
+        <div class="modal-content">
+            <a class="boxclose modal-close">&#10006;</a>
+            <div class="slider">
+                <ul class="slides"></ul>
+                <input type="file" id="uploadFileInput" multiple style="display: none">
+                <a id="uploadFileBtn" class="waves-effect waves-light btn" style="float: left;">add photo</a>
+            </div>
+            <div class="waypointContainer">
+                <div class="waypointInfo">
+                    <div class="card-panel grey lighten-5 z-depth-1">
+                        <div class="title">
+                            <i class="small material-icons" data-position="bottom" data-delay="50" style="color: #00acc1!important;">location_on</i>
+                            <span class="value" />
+                        </div>
+                        <hr class="line">
+                        <div class="description">
+                            <span class="value" />
+                        </div>
+                        <!--<div class="address">-->
+                        <!--<i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>-->
+                        <!--<span>Address: </span><span class="value" />-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div class="commentSection card-panel grey lighten-5 z-depth-1">
+                    <div class="newComment">
+                        <textarea rows="4" cols="50" placeholder="your comment"></textarea>
+                        <a class="waves-effect waves-light btn addCommentBtn">add</a>
+                    </div>
+                    <div class="comments">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
         </div>
     </div>
     <!--google map script temporary here-->
@@ -239,18 +276,12 @@
                     position: new google.maps.LatLng(waypoints[i].latitude, waypoints[i].longitude),
                     map: map
                 });
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        waypointClickHandler(waypoints[i].id);
+                    }
+                })(marker, i));
             }
-
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    $(".waypointInfo").slideDown();
-                    $(".waypointInfo .title .value").html(waypoints[i].id);
-                    $(".waypointInfo .description .value").html(waypoints[i].description);
-                    $(".waypointInfo .coordinates .value").html(waypoints[i].latitude + ", " + waypoints[i].longitude);
-                    infowindow.setContent(waypoints[i].description);
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
         }
 
         <!--Initializes route(based on trackpoints)-->
@@ -312,8 +343,9 @@
                     var dateDiv =  $('<div />')
                         .attr("class", "routeDate");
                     var hr = $('<hr>');
-                    routeDiv.append(authorDiv);
+                    routeDiv.append($('<div>Route added by:</div>'))
                     routeDiv.append(hr);
+                    routeDiv.append(authorDiv);
                     routeDiv.append(descDiv);
                     routeDiv.append(dateDiv);
                     routeCard.append(routeDiv);

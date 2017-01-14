@@ -26,7 +26,6 @@
 <body  onload="hideAllLayouts();">
  <nav>
         <div class="nav-wrapper cyan darken-1">
-            <img class="logoImg" src="images/logo.png">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href=""><i class="material-icons">search</i></a></li>
                 <li><a href=""><i class="material-icons">view_module</i></a></li>
@@ -39,46 +38,50 @@
         <div class="col s3" >
             <ul id="nav-mobile" class="side-nav fixed cyan darken-1" >         
                 <div style= "padding:40px;"><img class="logoImg" src="images/logo.png"></div>
-                <li class="bold DashboardLink"><a href="#" class="waves-effect waves-teal">Dashboard</a></li>
-                <li class="bold CommentsLink"><a href="#" class="waves-effect waves-teal">Comments</a></li>
-                <li class="bold UsersLink"><a href="#" class="waves-effect waves-teal">Users</a></li>
+                <li class="bold DashboardLink"><a href="#" class="waves-effect waves-teal white-text">Dashboard</a></li>
+                <li class="bold CommentsLink"><a href="#" class="waves-effect waves-teal white-text">Comments</a></li>
+                <li class="bold UsersLink"><a href="#" class="waves-effect waves-teal white-text">Users</a></li>
             </ul>
         </div>
         <div class="col s8 PageContent">
 <!--            DASHBOARD VIEW-->
-            <div id="DashBoardLayout">
-                <div class="ContentName">DAILY STATISTICS</div>
-                <div class= "col s3  Stats">NEW USERS
+          <div id="DashBoardLayout">
+                <div class="ContentName">DAILY SUMMARY</div>
+                <div class= "col s3  Stats card-panel">NEW USERS<br><br>
                     <div id="dailyUsersCount"class="StatsContent"></div>
                 </div>
-                <div class= "col s3 offset-s1 Stats">NEW WAY POINTS
+                <div class= "col s3 offset-s1 Stats card-panel">NEW WAY POINTS
                     <div id="dailyPostsCount"class="StatsContent"></div>
                 </div>    
-                <div class= "col s3 offset-s1 Stats">NEW COMMENTS
+                <div class= "col s3 offset-s1 Stats card-panel">NEW COMMENTS
                     <div id="dailyCommentsCount"class="StatsContent"></div>
                 </div>
                 <div class="Spacer"></div>
                 
-                <div class="ContentName ">GLOBAL STATISTICS</div>
-                <div class= "col s3  Stats">TOTAL USERS
+                <div class="ContentName ">GLOBAL SUMMARY</div>
+                <div class= "col s3  Stats card-panel">TOTAL USERS<br><br>
                     <div id="usersCount"class="StatsContent"></div>
                 </div>
-                <div class= "col s3 offset-s1 Stats">TOTAL WAY POINTS
+                <div class= "col s3 offset-s1 Stats card-panel">TOTAL WAY POINTS
                     <div id="postsCount"class="StatsContent"></div>
                 </div>
-                <div class= "col s3 offset-s1 Stats">TOTAL COMMENTS
+                <div class= "col s3 offset-s1 Stats card-panel">TOTAL COMMENTS
                     <div id="commentsCount"class="StatsContent"></div>
                 </div>
 
             </div>
 <!--            COMMENTS VIEW-->
             <div id="CommentsLayout">
-                <div class= "col s4">
+                <div class= "col s5">
                     <div class="ContentName">WAY POINTS</div>
-                    <div class="wayPointName"></div>
+                    <div class="wayPointName" style="max-height: 600px; overflow: auto;"></div>
                 </div>
-                  <div class= "col s7">
-                    <div class="ContentName">COMMENTS FOR TRACK POINTS</div>
+                  <div class= "col s7 commentsDiv" style="display: none;">
+                    <div class="ContentName">COMMENTS FOR WAY POINTS</div>
+                      <div class="commentSection card-panel grey lighten-5 z-depth-1">
+                          <div class="comments" style=" max-height: 600px;">
+                          </div>
+                      </div>
                 </div>
             </div>
 <!--            USERS LIST VIEW-->
@@ -190,10 +193,9 @@
         {
             wayPointsRef.on("value",function(snapshot){
                 snapshot.forEach(function(childSnapshot){
-                    childSnapshot.child("comments").forEach(function(commentSnapshot){
-                    var childSnapshotData = childSnapshot.val(); 
-                       autoGenerateWayPointDiv(childSnapshotData.id,childSnapshotData.description);
-                    })
+                    var childSnapshotData = childSnapshot.val();
+                    autoGenerateWayPointDiv(childSnapshotData.id,childSnapshotData.description, childSnapshotData.address);
+
                 })
                  $("#displayComments").html(dailyCommentsCount);
             })
@@ -203,9 +205,29 @@
             usersRef.on("value",function(snapshot){
                 snapshot.forEach(function(usersnapshot){
                     var user = usersnapshot.val();
-                    autoGenerateUserDiv(user.name, user.reole, user.email, user.isBlocked);
+                    autoGenerateUserDiv(user.name, user.role, user.email, user.isBlocked);
                 })
             })
+        }
+        function showWaypointComment(waypointId) {
+            var chosenWaypoint = database.ref('Cities/Lodz/WayPoints/' + waypointId);
+            chosenWaypoint.on('value', function (snapshot) {
+                $(".comment").remove();
+                snapshot.child("comments").forEach(function (childSnapshot) {
+                    var childSnapshotData = childSnapshot.val();
+                    findUsernameById(childSnapshotData.authorId, function (username) {
+                        appendCommentAdminPanel(username,
+                            (new Date(childSnapshotData.timestamp)).toLocaleString(), childSnapshotData.message);
+                    })
+
+                })
+            })
+        }
+
+
+            <!--Append comment in comments section-->
+        function appendCommentAdminPanel(authorId, date, message) {
+            $(".comments").prepend("<div class='comment'><span class='commentAuthorId'>" + authorId + "<i class='material-icons' style='float: right; color: #00acc1!important;'>delete</i></span><span class='commentDate'>" + date + "</span><span class='commentMessage'>" + message + "</span></div>")
         }
         $(".DashboardLink").on("click",function() {
             hideAllLayouts();
@@ -227,6 +249,12 @@
             hideAllLayouts();
             showUsersLayout();
             displayAllUsers();
+        });
+        $(".wayPointName").delegate(".waypointDetails", "click", function(event) {
+            showWaypointComment($(this).data("id"))
+            $(".waypointDetails").removeClass("active");
+            $(this).addClass("active");
+            $(".commentsDiv").slideDown();
         });
         
         function showDashboardLayout()
@@ -253,13 +281,13 @@
             var dboard = document.getElementById('DashBoardLayout');
             dboard.style.display = "none"
         }
-        function autoGenerateWayPointDiv(wayPointId,description)
+        function autoGenerateWayPointDiv(wayPointId,description,address)
         {
-             $(".wayPointName").prepend("<div class='waypointDetails'><div class='waypointName'>" + wayPointId + "</div><div class='waypointDesc'>Description: " + description + "</div></div>");
+             $(".wayPointName").append("<div class='waypointDetails' data-id=" + wayPointId + "><div class='waypointName'>" + address + "</div><div class='waypointDesc'>Description: " + description + "</div></div>");
         }
-        function autoGenerateUserDiv(name, reole, email, isBlocked)
+        function autoGenerateUserDiv(name, role, email, isBlocked)
         {
-             $(".userGenerator").append(" <div class='col s6 userstyle'><div class='userScheme col s3'><p>Name:</p><p>Email:</p><p>Role:</p><p>isBlocked:</p></div><div class='userData col s9'><p>"+ name+"</p><p>"+reole +"</p><p>"+email +"</p><p>"+ isBlocked+"</p></div></div>");
+             $(".userGenerator").append(" <div class='col s6 card-panel'><div class='col s3'><p>Name:</p><p>Email:</p><p>Role:</p><p>isBlocked:</p></div><div class='col s9' style='font-weight: bold'><p>"+ name+"</p><p>"+email +"</p><p>"+role +"</p><p>"+ isBlocked+"<i class='material-icons' style='float: right; color: #00acc1!important; cursor: pointer'>block</i></p></div></div>");
         }
         
     </script>      
