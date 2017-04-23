@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../css/main.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../css/style.css" media="screen,projection" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-storage.js"></script>
+
+    <script src="../js/custom.js"></script>
+</head>
+
+<body>
+    <ul id="userDropdown" class="dropdown-content">
+        <li><a href="profile.html">My Profile</a></li>
+        <li><a href="#!">Settings</a></li>
+        <li class="divider"></li>
+        <li class="logout-btn"><a>Logout</a></li>
+    </ul>
+    <!--nav Bar-->
+    <nav>
+        <div class="nav-wrapper cyan darken-1">
+            <a href="main.html" style="cursor: pointer"><img class="logoImg" src="../images/logo.png"></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href=""><i class="material-icons">search</i></a></li>
+                <li><a href=""><i class="material-icons">view_module</i></a></li>
+                <li><a href=""><i class="material-icons">refresh</i></a></li>
+                <li><a class="dropdown-button" data-activates="userDropdown"><span class="username"></span><i class="material-icons right">person</i></a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+            </div>
+            <div class="post">
+                <div class="col s8">
+                        <div id="map"></div>
+                </div>
+                <!--postedRoutes-->
+                <div class="col s4">
+                    <div class="scroll" id="recentlyAddedRoutes"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!--footer-->
+    <footer class="page-footer cyan darken-1">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Contact</h5>
+                    <p class="grey-text text-lighten-4">Email: 123@gmail.com</p>
+                    <p class="grey-text text-lighten-4">Phone: 123-456-789</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Information</h5>
+                    <ul class="footerLinks">
+                        <li><a class="grey-text text-lighten-3" href="#!">Privacy Policy |</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Payment Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                © 2014 Virtual Driving School. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    <div id="newWaypointModal" class="modal">
+        <div class="modal-content">
+            <a class="boxclose modal-close">&#10006;</a>
+            <h4><i class="small material-icons tooltipped" data-position="bottom" data-delay="50">location_on</i>Waypoint</h4>
+            <div class="coordinateOnModal">
+                <span>Latitude: </span>
+                <span class="waypointLatitude"></span><br>
+                <span>Longitude: </span>
+                <span class="waypointLongitude"></span><br>
+                <span class=""></span>
+                <input class="waypointAddress" />
+                <input class="waypointDesc" placeholder="Description"></input>
+                <form action="#">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input id="imagesInput" type="file" multiple>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat save-btn">Save</a>
+        </div>
+    </div>
+    <div id="waypointInfoModal" class="modal">
+        <div class="modal-content">
+            <a class="boxclose modal-close">&#10006;</a>
+            <div class="slider">
+                <ul class="slides"></ul>
+                <input type="file" id="uploadFileInput" multiple style="display: none">
+                <a id="uploadFileBtn" class="waves-effect waves-light btn" style="float: left;">add photo</a>
+            </div>
+            <div class="waypointContainer">
+                <div class="waypointInfo">
+                    <div class="card-panel grey lighten-5 z-depth-1">
+                        <div class="title">
+                            <i class="small material-icons" data-position="bottom" data-delay="50" style="color: #00acc1!important;">location_on</i>
+                            <span class="value" />
+                        </div>
+                        <hr class="line">
+                        <div class="description">
+                            <span class="value" />
+                        </div>
+                    </div>
+                </div>
+                <div class="commentSection card-panel grey lighten-5 z-depth-1">
+                    <div class="newComment">
+                        <textarea rows="4" cols="50" placeholder="your comment"></textarea>
+                        <a class="waves-effect waves-light btn addCommentBtn">add</a>
+                    </div>
+                    <div class="comments">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+    <!--google map script temporary here-->
+    <script>
+        firebase.auth().onAuthStateChanged(function(currentUser) {
+            if (currentUser) {
+                $(".username").html(currentUser.email);
+            }
+        });
+
+        var database = firebase.database();
+        var routesRef = database.ref('Cities/Lodz/Routes');
+        var waypointsRef = database.ref('Cities/Lodz/WayPoints');
+
+        $( document ).ready(function() {
+            initRecentlyAddedRoutes();
+        });
+
+        <!--Initializes map-->
+        function initMap() {
+            var waypoints = [];
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 8,
+                center: new google.maps.LatLng(51.8550576, 19.000)
+            });
+            google.maps.event.addListener(map, "click", mapClickHandler);
+
+            waypointsRef.on('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var childData = childSnapshot.val();
+                    var wayPoint = {};
+                    wayPoint.id = childData.id;
+                    wayPoint.latitude = childData.coordinate.latitude;
+                    wayPoint.longitude = childData.coordinate.longitude;
+                    wayPoint.description = childData.description;
+                    waypoints.push(wayPoint);
+                });
+                initMarkers(waypoints, map);
+            });
+            routesRef.on('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var routeId = childSnapshot.val();
+                    var trackpoints = new Array();
+                    childSnapshot.child("trackPoints").forEach(function(trackpoint) {
+                        var trackPoint = {};
+                        trackPoint.lat = trackpoint.child("coordinate/latitude").val();
+                        trackPoint.lng = trackpoint.child("coordinate/longitude").val();
+                        trackpoints.push(trackPoint);
+                    })
+                    initRoute(trackpoints, map, routeId.id);
+                })
+            });
+        }
+
+        <!--Handler for click on map (showing modal to add new waypoint)-->
+        function mapClickHandler(event) {
+            var lat = event.latLng.lat();
+            var lng = event.latLng.lng();
+            var geocoder = new google.maps.Geocoder;
+            var address;
+
+            $(document).ready(function() {
+                var waypoint = {
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng)
+                };
+                geocoder.geocode({
+                    'location': waypoint
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[1]) {
+                            address = results[1].formatted_address;
+                            $('.waypointAddress').val(address).focus();
+                        }
+                    }
+                });
+
+                $('#newWaypointModal').modal({
+                    dismissible: false,
+                    complete: function() {
+                        $(".waypointDesc").val("");
+                        $("#imagesInput").val("");
+                    }
+                });
+                $('#newWaypointModal').modal('open');
+                $('.waypointLatitude').html(lat);
+                $('.waypointLongitude').html(lng);
+
+                $('.save-btn').off().on("click", function() {
+                    var waypoint = {};
+                    waypoint.description = $('.waypointDesc').val();
+                    waypoint.latitude = lat;
+                    waypoint.longitude = lng;
+                    if(waypoint.description === "") {
+                        alert('You have to enter description!');
+                        return false;
+                    }
+                    waypoint.address = $('.waypointAddress').val();
+                    addWaypoint(waypoint, firebase.auth().currentUser.uid);
+                    $('#newWaypointModal').modal('close');
+                })
+            });
+        }
+
+        <!--Initializes markers on map(based on waypoints)-->
+        function initMarkers(waypoints, map) {
+            var infowindow = new google.maps.InfoWindow();
+            var geocoder = new google.maps.Geocoder;
+            var marker;
+            for (var i = 0; i < waypoints.length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(waypoints[i].latitude, waypoints[i].longitude),
+                    map: map
+                });
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        waypointClickHandler(waypoints[i].id);
+                    }
+                })(marker, i));
+            }
+        }
+
+        <!--Initializes route(based on trackpoints)-->
+        function initRoute(trackpoints, map, routeId) {
+            var route = new google.maps.Polyline({
+                path: trackpoints,
+                geodesic: true,
+                strokeColor: '#0000FF',
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                clickable: true,
+                id: routeId
+            });
+            route.setMap(map);
+
+            google.maps.event.addListener(route, 'click', function() {
+                localStorage.setItem("routeId", this.id);
+                window.location = "route.html";
+            });
+        }
+
+        <!--Adds waypoint with coordinate, description, authorId, address and images-->
+        function addWaypoint(waypoint, authorId) {
+            var timestampTemp = + new Date();
+            var rootRef = firebase.database().ref();
+            var waypointsRef = rootRef.child('Cities/Lodz/WayPoints');
+            var newWaypoint = waypointsRef.push();
+            var newWaypointId = newWaypoint.key;
+            newWaypoint.set({
+                coordinate: {
+                    latitude: waypoint.latitude,
+                    longitude: waypoint.longitude
+                },
+                description: waypoint.description,
+                authorId: authorId,
+                address: waypoint.address,
+                id: newWaypointId,
+                timestamp: timestampTemp
+             });
+            addImages(newWaypointId, $("#imagesInput")[0].files);
+        }
+
+        <!--Initializes recently added routes-->
+        function initRecentlyAddedRoutes() {
+            var routesRef = database.ref('Cities/Lodz/Routes');
+            routesRef.on('value', function(snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childData = childSnapshot.val();
+                    var recentlyAddedRoutesDiv = $("#recentlyAddedRoutes");
+                    var routeCard = $('<div />')
+                        .attr("class", "card-panel grey lighten-5 z-depth-1 tooltipped");
+                    var routeDiv = $('<div />')
+                        .attr("class", "postedRoute")
+                        .attr("data-id", childData.id);
+                    var authorDiv = $('<div />')
+                        .attr("class", "routeAuthor");
+                    var descDiv = $('<div />')
+                        .attr("class", "routeDescription");
+                    var dateDiv =  $('<div />')
+                        .attr("class", "routeDate");
+                    var hr = $('<hr>');
+                    routeDiv.append($('<div>Route added by:</div>'))
+                    routeDiv.append(hr);
+                    routeDiv.append(authorDiv);
+                    routeDiv.append(descDiv);
+                    routeDiv.append(dateDiv);
+                    routeCard.append(routeDiv);
+                    findUsernameById(childData.authorId, function (username) {
+                        if(username != undefined) {
+                            authorDiv.html(username);
+                            descDiv.html(childData.name);
+                            dateDiv.html((new Date(childData.timestamp)).toLocaleString());
+                            recentlyAddedRoutesDiv.append(routeCard);
+                        }
+                    });
+                })
+            });
+        }
+
+
+        $(".logout-btn").on("click", function() {
+            firebase.auth().signOut().then(function() {
+                window.location = "../index.html";
+            }, function(error) {});
+        });
+
+        $(document).on('click', '.postedRoute', function(event) {
+            var nearestRoute = $(event.target).closest(".postedRoute");
+            localStorage.setItem("routeId", nearestRoute.data("id"));
+            window.location = "route.html";
+        });
+    </script>
+    <!--Import jQuery before materialize.js-->
+
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyaOvUpwamVCDPcXn2eLH_JTi8bVrQ9Is&callback=initMap"></script>
+</body>
+
+</html>

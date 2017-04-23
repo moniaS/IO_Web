@@ -5,11 +5,11 @@
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
     <!--Import main.css-->
-    <link type="text/css" rel="stylesheet" href="css/main.css" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/adminPanel.css" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/style.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../css/main.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../css/adminPanel.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="../css/style.css" media="screen,projection" />
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -20,7 +20,7 @@
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-storage.js"></script>
 
-    <script src="js/custom.js"></script>
+    <script src="../js/custom.js"></script>
 </head>
 
 <body  onload="hideAllLayouts();">
@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col s3" >
             <ul id="nav-mobile" class="side-nav fixed cyan darken-1" >         
-                <div style= "padding:40px;"><img class="logoImg" src="images/logo.png"></div>
+                <div style= "padding:40px;"><img class="logoImg" src="../images/logo.png"></div>
                 <li class="bold DashboardLink"><a href="#" class="waves-effect waves-teal white-text">Dashboard</a></li>
                 <li class="bold CommentsLink"><a href="#" class="waves-effect waves-teal white-text">Comments</a></li>
                 <li class="bold UsersLink"><a href="#" class="waves-effect waves-teal white-text">Users</a></li>
@@ -50,22 +50,22 @@
                 <div class= "col s3  Stats card-panel">NEW USERS<br><br>
                     <div id="dailyUsersCount"class="StatsContent"></div>
                 </div>
-                <div class= "col s3 offset-s1 Stats card-panel">NEW WAY POINTS
+                <div class= "col s3 offset-s1 Stats card-panel">NEW WAYPOINTS<br><br>
                     <div id="dailyPostsCount"class="StatsContent"></div>
                 </div>    
-                <div class= "col s3 offset-s1 Stats card-panel">NEW COMMENTS
+                <div class= "col s3 offset-s1 Stats card-panel">NEW COMMENTS<br><br>
                     <div id="dailyCommentsCount"class="StatsContent"></div>
                 </div>
                 <div class="Spacer"></div>
                 
-                <div class="ContentName ">GLOBAL SUMMARY</div>
+                <div class="ContentName ">TOTAL SUMMARY</div>
                 <div class= "col s3  Stats card-panel">TOTAL USERS<br><br>
                     <div id="usersCount"class="StatsContent"></div>
                 </div>
-                <div class= "col s3 offset-s1 Stats card-panel">TOTAL WAY POINTS
+                <div class= "col s3 offset-s1 Stats card-panel">TOTAL WAYPOINTS<br><br>
                     <div id="postsCount"class="StatsContent"></div>
                 </div>
-                <div class= "col s3 offset-s1 Stats card-panel">TOTAL COMMENTS
+                <div class= "col s3 offset-s1 Stats card-panel">TOTAL COMMENTS<br><br>
                     <div id="commentsCount"class="StatsContent"></div>
                 </div>
 
@@ -73,11 +73,11 @@
 <!--            COMMENTS VIEW-->
             <div id="CommentsLayout">
                 <div class= "col s5">
-                    <div class="ContentName">WAY POINTS</div>
+                    <div class="ContentName">WAYPOINTS</div>
                     <div class="wayPointName" style="max-height: 600px; overflow: auto;"></div>
                 </div>
                   <div class= "col s7 commentsDiv" style="display: none;">
-                    <div class="ContentName">COMMENTS FOR WAY POINTS</div>
+                    <div class="ContentName">COMMENTS FOR WAYPOINTS</div>
                       <div class="commentSection card-panel grey lighten-5 z-depth-1">
                           <div class="comments" style=" max-height: 600px;">
                           </div>
@@ -292,6 +292,6 @@
         
     </script>      
     
-    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
 </body>
 </html>
