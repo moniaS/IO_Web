@@ -56,3 +56,6 @@
 .card-panel:hover {
     background-color: #00acc1;
 }
+.Stats.card-panel {
+    height: 250px;
+}
