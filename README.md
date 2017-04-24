@@ -1,5 +1,5 @@
 # Driving School Project
-Driving School Project is a web application, which I was creating for my studies and it is going to help people to pass driver's license practise exam. 
+Driving School Project is a web application, which I was creating for my studies and its purpose is to help people to pass driver's license practise exam. 
 ## Purpose of the project
 The purpose of this project was to create website, which provides access to map and enable users to add new routes and waypoints on the map. During adding new waypoints you can upload a photo and add description. What's more users can comment existing waypoints. 
 
