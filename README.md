@@ -23,4 +23,4 @@ waypoint on the map. You can click on the marker on the map to see information a
 
 Third page is a page of specified route [Route Page](https://monias.github.io/IO_Web/pages/route.html) - this page shows the nearest waypoints to the route. You can click on marker or on the item in the right panel and you will see information about waypoint, where you can also comment the waypoint.
 
-Another page is a profile page [Profile Page](https://monias.github.io/IO_Web/pages/profile.html) - this page enable user to subscribe page. User, who creates account have a possibility to show information about five waypoints. To see more you need to click "Subscribe" on the profile page.
+Another page is a profile page [Profile Page](https://monias.github.io/IO_Web/pages/profile.html) - this page enable user to subscribe page. User, who creates account have a possibility to show information about five waypoints. To see more you need to click "Subscribe" on the profile page. To get to this page you need to click in the upper right corner and choose "My Profile".
