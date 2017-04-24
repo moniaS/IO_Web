@@ -1,48 +1,25 @@
-![alt tag](https://raw.github.com/dogfalo/materialize/master/images/materialize.gif)
-===========
+# Driving School Project
+Driving School Project is a web application, which I was creating for my studies and it is going to help people to pass driver's license practise exam. 
+## Purpose of the project
+The purpose of this project was to create website, which provides access to map and enable users to add new routes and waypoints on the map. During adding new waypoints you can upload a photo and add description. What's more users can comment existing waypoints. 
 
-[![Travis CI](https://travis-ci.org/Dogfalo/materialize.svg?branch=master)](https://travis-ci.org/Dogfalo/materialize)[![devDependency Status](https://david-dm.org/Dogfalo/materialize/dev-status.svg)](https://david-dm.org/Dogfalo/materialize#info=devDependencies)[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Dogfalo/materialize?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Another purpose of this project was learning how to deal with NoSQL database (Firebase).
+## Technologies
+* HTML
+* CSS/SCSS
+* Javascript
+* jQuery
+* Materialize
+* Firebase (NoSQL Database)
+## Plan to develop
+The most important feature to develop in the future is possibility of adding new routes on website.
+## Preview
+My application is available at https://monias.github.io/IO_Web/.
+First page is a login page [Login Page](https://monias.github.io/IO_Web/) - feel free to use option to register a new account.
 
-[Materialize](http://materializecss.com/), a CSS Framework based on material design
+Second page is a dashboard page [Main Page](https://monias.github.io/IO_Web/pages/main.html) - this page presents map, added routes and
+waypoint on the map. You can click on the marker on the map to see information about the waypoint or you can go to the page of specified route - to do this you have to click on the one item in the list on the right or you can click on route on the map. When you click anywhere on the map you will have chance to add new waypoint.
 
-### Current Version : v0.97.7
+Third page is a page of specified route [Route Page](https://monias.github.io/IO_Web/pages/route.html) - this page shows the nearest waypoints to the route. You can click on marker or on the item on the right list and you will see information about waypoint, wgere you can also comment the waypoint.
 
-## Sass Requirements:
-- Ruby Sass 3.3+, LibSass 0.6+
-
-## Supported Browsers:
-Chrome 35+, Firefox 31+, Safari 7+, IE 10+
-
-## Changelog
-- v0.97.7 (July 23rd)
-  - Basic horizontal cards
-  - Carousel bug fixes and new features
-  - Updated sidenav styles and new component
-  - Meteor package now supports Sass
-  - Autocomplete form component
-  - Chips jQuery plugin
-- v0.97.6 (April 1st)
-  - **Removed deprecated material icons from project**
-  - **Changed /font directory to /fonts**
-  - Datepicker and ScrollSpy now compatible with jQuery 2.2.x
-  - Responsive tables now work with empty cells
-  - Added focus states to checkboxes, switches, and radio buttons
-  - Sidenav and Modals no longer cause flicker with scrollbar
-  - Materialbox overflow and z-index issues fixed
-  - Added new option for Card actions within a Card reveal
-- v0.97.5 (Dec 21, 2015)
-  - Fixed Meteor package crash
-- v0.97.4 (Dec 20, 2015)
-  - Added Jasmine testing with Travis CI
-  - Select bugfixes
-  - Grid Offset bugfix
-  - Dropdown overflow bugfix
-  - Range slider error bugfix
-
-
-
-## Contributing
-[Please read CONTRIBUTING.md for more information](CONTRIBUTING.md)
-
-## Testing
-We use Jasmine as our testing framework and we're trying to write a robust test suite for our components. If you want to help, [here's a starting guide on how to write tests in Jasmine](https://docs.google.com/document/d/1dVM6qGt_b_y9RRhr9X7oZfFydaJIEqB9CT7yekv-4XE/edit?usp=sharing)
+Another page is a profile page [Profile Page](https://monias.github.io/IO_Web/pages/profile.html) - this page enable user to subscribe page. User, who creates account have a possibility to show information about five waypoints. To see more you need to click "Subscribe" on the profile page.
