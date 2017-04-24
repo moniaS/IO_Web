@@ -15,6 +15,7 @@ Another purpose of this project was learning how to deal with NoSQL database (Fi
 The most important feature to develop in the future is possibility of adding new routes on website.
 ## Preview
 My application is available at https://monias.github.io/IO_Web/.
+
 First page is a login page [Login Page](https://monias.github.io/IO_Web/) - feel free to use option to register a new account.
 
 Second page is a dashboard page [Main Page](https://monias.github.io/IO_Web/pages/main.html) - this page presents map, added routes and
